@@ -3,11 +3,11 @@ import numpy as np
 import time
 import psutil
 
-def RemoveStars(dio):
+def RemoveStars(dio, jotaro):
     i = 0
 
     start = time.time()
-    threshold = 0.37
+    threshold = jotaro
     global image
     image = cv2.imread(dio)
     # image = cv2.resize(image, (800,800))

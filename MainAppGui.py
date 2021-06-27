@@ -16,9 +16,6 @@ import ImageStar
 Builder.load_file('Kv\MainScreen.kv')
 
 
-class textinp(Widget):
-    pass
-
 
 class StarRemoval(App):
     def build(self):
@@ -33,9 +30,17 @@ class StarRemoval(App):
         self.root.get_screen("MainScreen").ids["image"].source = imagename
         self.imagename = imagename
 
+    def threshold(self, instance, thresh, giorno):
+        print(thresh)
+        self.root.get_screen("MainScreen").ids["giorno"].source = thresh
+        self.thresh = thresh
+
+
     def process(self):
         imagename = self.imagename
-        ImageStar.RemoveStars(imagename)
+        thresh = self.thresh
+        thresh = float(thresh)
+        ImageStar.RemoveStars(imagename, thresh)
         self.root.get_screen("MainScreen").ids["jojo"].source = 'finished.jpg'
 
 

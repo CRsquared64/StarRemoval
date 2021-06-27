@@ -14,7 +14,7 @@
 
     Label:
         pos_hint: {"x": -0.25, "y": 0.45}
-        text: 'Basic star removal or somin'
+        text: 'Basic star removal'
         font_size: 30
 
     Button:
@@ -26,11 +26,20 @@
     Image:
         id: image
         pos_hint: {"x" : 0, "y": 0}
-        size_hint: 0.5, 0.5
+        size_hint: 0.4, 0.5
     Image:
         id: jojo
         pos_hint: {"x": 0.5, "y": 0}
-        size_hint: 0.5, 0.5
+        size_hint: 0.4, 0.5
+
+    TextInput:
+        id: giorno
+        pos_hint: {"x": 0.7, "y": 0.7}
+        size_hint: 0.3, 0.05
+        multiline: False
+        hint_text: '0-1 detection rate (0 strongest)'
+        on_text: app.threshold(*args, giorno)
+
 
 
 
