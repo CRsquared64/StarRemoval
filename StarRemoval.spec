@@ -3,7 +3,7 @@ from kivy_deps import sdl2, glew
 block_cipher = None
 
 
-a = Analysis(['MainAppGui.py'],
+a = Analysis(['StarRemoval.py'],
              pathex=['D:\\Documents\\StarRemoval'],
              binaries=[],
              datas=[("MainScreen.kv", ".")],
@@ -23,7 +23,7 @@ exe = EXE(pyz,
           a.zipfiles,
           a.datas,
           *[Tree(p) for p in (sdl2.dep_bins + glew.dep_bins)],
-          name='MainAppGui',
+          name='StarRemoval',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,
