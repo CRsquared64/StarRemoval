@@ -1,4 +1,10 @@
 <MainScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.49, 0.49, 0.49, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
 
     FloatLayout:
         pos_hint: {"y": 0}
@@ -39,6 +45,7 @@
         multiline: False
         hint_text: '0-1 detection rate (0 strongest)'
         on_text: app.threshold(*args, giorno)
+
 
 
 
