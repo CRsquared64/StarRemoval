@@ -10,8 +10,8 @@ kivy.require('2.0.0')
 
 
 class StarRemoval(App):
-    current_image_path: str
-    current_threshold: int
+    current_image_path: str = ""
+    current_threshold: int = 0
 
     def build(self):
         Builder.load_file('MainScreen.kv')
@@ -31,6 +31,10 @@ class StarRemoval(App):
 
     def process(self):
         path = self.current_image_path
+
+        if path == "":
+            return
+
         thresh = self.current_threshold
         thresh = float(thresh)
         ImageStar.RemoveStars(path, thresh)
