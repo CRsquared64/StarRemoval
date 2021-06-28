@@ -49,6 +49,7 @@ def RemoveStars(dio, jotaro, on_finish, _set_processing_text):
     set_processing_text("Generated mask")
 
     set_processing_text("Using Mask...")
+    Logger.info("Processor: Using Mask...")
     image = cv2.inpaint(image, mask, 2, cv2.INPAINT_NS)
     Logger.info("Processor: Used mask ")
     set_processing_text("Used Mask")
