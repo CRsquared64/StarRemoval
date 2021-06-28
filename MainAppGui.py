@@ -24,6 +24,7 @@ class StarRemoval(App):
     def gettext(self, path):
         print(path)
         self.current_image_path = path
+        self.root.get_screen("MainScreen").ids["before_image"].source = path
 
     def threshold(self, thresh):
         print(thresh)
@@ -38,7 +39,7 @@ class StarRemoval(App):
         thresh = self.current_threshold
         thresh = float(thresh)
         ImageStar.RemoveStars(path, thresh)
-        self.root.get_screen("MainScreen").ids["jojo"].source = 'finished.jpg'
+        self.root.get_screen("MainScreen").ids["after_image"].source = 'finished.jpg'
 
 
 class sl(ScreenManager):
