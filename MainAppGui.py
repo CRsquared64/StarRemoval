@@ -1,5 +1,5 @@
 import os
-os.environ["KCFG_KIVY_LOG_LEVEL"] = "trace"
+#os.environ["KCFG_KIVY_LOG_LEVEL"] = "trace"
 import cv2
 import kivy
 
@@ -42,7 +42,12 @@ class StarRemoval(App):
         thresh = self.thresh
         thresh = float(thresh)
         ImageStar.RemoveStars(imagename, thresh)
+        print(ImageStar.i)
+        ImageStar.i = str(ImageStar.i)
+        self.root.get_screen("MainScreen").ids["starnstuff"].text = ImageStar.i
         self.root.get_screen("MainScreen").ids["jojo"].source = 'finished.jpg'
+
+
 
 
 class sl(ScreenManager):

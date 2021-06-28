@@ -4,6 +4,7 @@ import time
 import psutil
 
 def RemoveStars(dio, jotaro):
+    global i
     i = 0
 
     start = time.time()

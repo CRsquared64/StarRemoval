@@ -6,6 +6,7 @@
             pos: self.pos
             size: self.size
 
+
     FloatLayout:
         pos_hint: {"y": 0}
         size_hint: 1, 1
@@ -19,7 +20,7 @@
         multiline: False
 
     Label:
-        pos_hint: {"x": -0.25, "y": 0.45}
+        pos_hint: {"x": -0.35, "y": 0.45}
         text: 'Basic star removal'
         font_size: 30
 
@@ -45,6 +46,32 @@
         multiline: False
         hint_text: '0-1 detection rate (0 strongest)'
         on_text: app.threshold(*args, giorno)
+
+    Image:
+        id: back
+        pos_hint: {"x": -0.05, "y": 0.42}
+        size_hint: 0.4, 0.5
+        source: "background.jpg"
+
+    Label:
+        id: lilolinfo
+        text: "INFO:"
+        font_size: 30
+        pos_hint: {"x": -0.45, "y": 0.3}
+
+    Label:
+        id: starnstuff
+        pos_hint: {"x": -0.39, "y": 0.26}
+        font_size: 24
+
+    Label:
+        id: starynight
+        text: "Stars: "
+        pos_hint: {"x": -0.46, "y": 0.26}
+        font_size: 24
+
+
+
 
 
 
