@@ -8,3 +8,5 @@ It is really quite simple to use.
 3. Press remove stars.
 4. Wait for it to finish
 5. When it's done, it will show on the screen in the bottom right and also save a new copy of the image in the same folder as the original.
+
+Test images are attached for testing.
