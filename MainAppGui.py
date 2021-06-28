@@ -1,27 +1,18 @@
-import os
-os.environ["KCFG_KIVY_LOG_LEVEL"] = "trace"
-import cv2
 import kivy
-
-kivy.require('2.0.0')
 from kivy.app import App
 from kivy.core.window import Window
 from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import ScreenManager
-from kivy.uix.widget import Widget
-from kivy_deps import sdl2, glew
 import ImageStar
 from MainScreen import MainScreen
-from kivy.config import Config
-from kivy.uix.textinput import TextInput
-from kivy.uix.image import Image
-import ImageStar
 
-Builder.load_file('MainScreen.kv')
+kivy.require('2.0.0')
 
 
 class StarRemoval(App):
     def build(self):
+        Builder.load_file('MainScreen.kv')
+
         Window.size = 850, 800
         Window.minimum_width = 850
         Window.minimum_height = 800
