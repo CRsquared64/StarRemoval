@@ -26,7 +26,7 @@ def RemoveStars(dio, jotaro, on_finish, _set_processing_text):
     Logger.info("Processor: Loaded image and converted to grey")
     set_processing_text("Loaded image and converted to grey")
 
-    template = cv2.imread('template2.png', 0)
+    template = cv2.imread('star.png', 0)
     w, h = template.shape[::-1]
     Logger.info("Processor: Loaded template")
     set_processing_text("Loaded template")
