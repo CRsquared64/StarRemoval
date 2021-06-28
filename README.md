@@ -1,15 +1,10 @@
 # StarRemoval
 A CPU opencv based star removal for astrophotography
 
-Right so, to use this is very simple but very unoptimised at the moment.
-Run the .exe, and a window should pop up, with a very simple layout.
-Then, in the box at the top right, type in the name/directory of the image.
-To make it easier, place the picture in the same location as the exe, so
-you can do the image name only. If its not in the same directory, you
-will have to do the full path, for example "C:/users/user/pictures/orion.jpg"
-The image should show up in the bottom left, if not, the directory is inncorectt.
-Then set a threshold level from 0-1, for example, i reccomed using 0.4-0.6
-in most images, however please fine tune this as it isnt fully accurate.
-Press the big button, and it might freeze for a bit as i havent fully made this,
-then, after 20-180 seconds average, in the bottom right a image should pop up,
-with the stars removed. It will be saved as finished.jpg
+It is really quite simple to use.
+
+1. Enter the path of the image u want to remove stars from. You know whether the path is correct if it has shown up in the top right box,
+2. Change the threshold with the slider, it goes from 0 to 1.
+3. Press remove stars.
+4. Wait for it to finish
+5. When it's done, it will show on the screen in the bottom right and also save a new copy of the image in the same folder as the original.
