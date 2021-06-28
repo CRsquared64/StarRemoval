@@ -45,15 +45,23 @@ class StarRemoval(App):
         thresh = float(thresh)
 
 
-        thread = Thread(target=ImageStar.RemoveStars, args=(path, thresh, self.process_finished))
+        thread = Thread(target=ImageStar.RemoveStars, args=(path, thresh, self.process_finished,
+                        self.set_processing_text))
         thread.start()
+        self.root.get_screen("MainScreen").ids["process_button"].disabled = True
+        self.root.get_screen("MainScreen").ids["after_image"].source = ""
 
 
 
     def process_finished(self, _elapsed_time):
         Logger.info("Finished processing image")
-        self.root.get_screen("MainScreen").ids["after_image"].source = 'finished.jpg'
+        self.root.get_screen("MainScreen").ids["after_image"].source = "finished.jpg"
+        self.root.get_screen("MainScreen").ids["process_button"].disabled = False
+        self.root.get_screen("MainScreen").ids["process_label"].text = ""
 
+
+    def set_processing_text(self, new_text):
+        self.root.get_screen("MainScreen").ids["process_label"].text = new_text
 
 
 class sl(ScreenManager):

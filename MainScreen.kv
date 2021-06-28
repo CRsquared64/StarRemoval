@@ -63,9 +63,18 @@
 
 
             Button:
+                id: process_button
+
                 text: 'REMOVE STARS'
                 font_size: 24
                 on_press: app.process()
+
+            Label:
+                id: process_label
+                text: ""
+                font_size: 20
+                height: 30
+                size_hint_y: None
 
 
         # --------------------------------------------------------------------------------------------------------------
@@ -79,8 +88,21 @@
             spacing: 20
 
 
+            Label:
+                text: "Before:"
+                font_size: 20
+                on_texture: self.height = self.texture.height
+                size_hint_y: None
+
             Image:
                 id: before_image
+
+
+            Label:
+                text: "Before:"
+                font_size: 20
+                on_texture: self.height = self.texture.height
+                size_hint_y: None
 
             Image:
                 id: after_image
