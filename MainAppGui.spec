@@ -5,7 +5,7 @@ block_cipher = None
 
 
 a = Analysis(['MainAppGui.py'],
-             pathex=['/Users/jjb/Desktop/programing/python/stuff/WIP/TheMaster-StarRemoval'],
+             pathex=['./'],
              binaries=[],
              datas=[("MainScreen.kv", ".")],
              hiddenimports=[],
