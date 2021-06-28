@@ -1,3 +1,4 @@
+import os
 from threading import Thread
 
 import kivy
@@ -55,7 +56,9 @@ class StarRemoval(App):
 
     def process_finished(self, _elapsed_time):
         Logger.info("Finished processing image")
-        self.root.get_screen("MainScreen").ids["after_image"].source = "finished.jpg"
+        self.root.get_screen("MainScreen").ids["after_image"].source = str(os.path.splitext(self.current_image_path)[0]
+                                                                           + '-' + str(self.current_threshold) +
+                                                                           os.path.splitext(self.current_image_path)[1])
         self.root.get_screen("MainScreen").ids["after_image"].reload()
         self.root.get_screen("MainScreen").ids["process_button"].disabled = False
         self.root.get_screen("MainScreen").ids["process_label"].text = ""

@@ -1,3 +1,5 @@
+import os
+
 import cv2
 import numpy as np
 import time
@@ -54,8 +56,9 @@ def RemoveStars(dio, jotaro, on_finish, _set_processing_text):
     Logger.info("Processor: Used mask ")
     set_processing_text("Used Mask")
 
-    cv2.imwrite("finished.jpg", image)
-    Logger.info("Processor: Wrote image to file")
+    cv2.imwrite(str(os.path.splitext(dio)[0] + '-' + str(threshold) + os.path.splitext(dio)[1]), image)
+    Logger.info(f"Processor: Wrote image to file "
+                f"{str(os.path.splitext(dio)[0] + '-' + str(threshold) + os.path.splitext(dio)[1])}")
     set_processing_text("Saved to file")
 
     Logger.info(f"Processor: Finished in {time.time() - start}")
