@@ -6,54 +6,84 @@
             pos: self.pos
             size: self.size
 
-    FloatLayout:
-        pos_hint: {"y": 0}
+    BoxLayout:
+        orientation: "horizontal"
         size_hint: 1, 1
 
-    TextInput:
-        id: input
-        hint_text: 'Image name'
-        pos_hint: {"x": 0.7, "y": 0.75}
-        size_hint: 0.3, 0.05
-        on_text: app.gettext(args[1])
-        multiline: False
-
-    Label:
-        pos_hint: {"x": -0.25, "y": 0.45}
-        text: 'Basic star removal'
-        font_size: 30
-
-    Button:
-        pos_hint: {"x": 0.7, "y": 0.8}
-        size_hint: 0.3, 0.2
-        text: 'REMOVE STARS'
-        font_size: 24
-        on_press: app.process()
-    Image:
-        id: image
-        pos_hint: {"x" : 0, "y": 0}
-        size_hint: 0.4, 0.5
-    Image:
-        id: jojo
-        pos_hint: {"x": 0.5, "y": 0}
-        size_hint: 0.4, 0.5
-
-    Slider:
-        id: giorno
-        pos_hint: {"x": 0.7, "y": 0.7}
-        size_hint: 0.3, 0.05
-        min: 0
-        max: 1
-        on_value: app.threshold(args[1])
 
 
+        BoxLayout: # Controls
+            orientation: "vertical"
+            size_hint_x: 0.5
 
 
+            Label:
+                text: 'Basic star removal'
+                font_size: 30
+                on_texture: self.height = self.texture.height
+                size_hint_y: None
+
+            TextInput:
+                id: input
+                hint_text: 'Image name'
+                on_text: app.gettext(args[1])
+                multiline: False
+                size_hint_y: None
+                height: self.font_size + 15
 
 
+            BoxLayout:
+                size_hint_y: None
+                height: 150
+
+                orientation: "vertical"
+
+                Widget: # Spacer
+                    size_hint_y: 0.3
+
+                Label:
+                    size_hint_y: 0.2
+
+                    id: threshold_label
+                    text: "Threshold: 0"
+                    text_size: self.size
+                    font_size: 20
+
+                Slider:
+                    size_hint_y: 0.2
+
+                    id: giorno
+                    min: 0
+                    max: 1
+                    on_value: app.threshold(args[1])
+                    on_value: threshold_label.text = f"Threshold - {args[1]}"
+                    size_hint_y: None
+                    height: 50
+
+                Widget: # Spacer
+                    size_hint_y: 0.3
 
 
+            Button:
+                text: 'REMOVE STARS'
+                font_size: 24
+                on_press: app.process()
 
 
+        # --------------------------------------------------------------------------------------------------------------
 
+
+        BoxLayout: # Images
+            orientation: "vertical"
+            size_hint_x: 0.5
+
+            padding: 20
+            spacing: 20
+
+
+            Image:
+                id: before_image
+
+            Image:
+                id: after_image
 
