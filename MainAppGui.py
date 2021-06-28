@@ -10,6 +10,9 @@ kivy.require('2.0.0')
 
 
 class StarRemoval(App):
+    current_image_path: str
+    current_threshold: int
+
     def build(self):
         Builder.load_file('MainScreen.kv')
 
@@ -18,21 +21,19 @@ class StarRemoval(App):
         Window.minimum_height = 800
         return sl()
 
-    def gettext(self, instance, imagename, image):
-        print(imagename)
-        self.root.get_screen("MainScreen").ids["image"].source = imagename
-        self.imagename = imagename
+    def gettext(self, path):
+        print(path)
+        self.current_image_path = path
 
-    def threshold(self, instance, thresh, giorno):
+    def threshold(self, thresh):
         print(thresh)
-        self.root.get_screen("MainScreen").ids["giorno"].source = thresh
-        self.thresh = thresh
+        self.current_threshold = thresh
 
     def process(self):
-        imagename = self.imagename
-        thresh = self.thresh
+        path = self.current_image_path
+        thresh = self.current_threshold
         thresh = float(thresh)
-        ImageStar.RemoveStars(imagename, thresh)
+        ImageStar.RemoveStars(path, thresh)
         self.root.get_screen("MainScreen").ids["jojo"].source = 'finished.jpg'
 
 
