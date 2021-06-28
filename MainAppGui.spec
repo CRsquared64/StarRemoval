@@ -1,10 +1,11 @@
 # -*- mode: python ; coding: utf-8 -*-
-from kivy_deps import sdl2, glew
+
+
 block_cipher = None
 
 
 a = Analysis(['MainAppGui.py'],
-             pathex=['D:\\Documents\\StarRemoval'],
+             pathex=['/Users/jjb/Desktop/programing/python/stuff/WIP/TheMaster-StarRemoval'],
              binaries=[],
              datas=[("MainScreen.kv", ".")],
              hiddenimports=[],
@@ -19,15 +20,23 @@ pyz = PYZ(a.pure, a.zipped_data,
              cipher=block_cipher)
 exe = EXE(pyz,
           a.scripts,
-          a.binaries,
-          a.zipfiles,
-          a.datas,
-          *[Tree(p) for p in (sdl2.dep_bins + glew.dep_bins)],
+          [],
+          exclude_binaries=True,
           name='MainAppGui',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,
           upx=True,
-          upx_exclude=[],
-          runtime_tmpdir=None,
-          console=True )
+          console=True)
+coll = COLLECT(exe,
+               a.binaries,
+               a.zipfiles,
+               a.datas,
+               strip=False,
+               upx=True,
+               upx_exclude=[],
+               name='MainAppGui')
+app = BUNDLE(coll,
+             name='MainAppGui.app',
+             icon=None,
+             bundle_identifier=None)
