@@ -2,9 +2,10 @@ import cv2
 import numpy as np
 import time
 import psutil
+from kivy.clock import Clock
 
 
-def RemoveStars(dio, jotaro):
+def RemoveStars(dio, jotaro, on_finish):
     i = 0
 
     start = time.time()
@@ -33,6 +34,8 @@ def RemoveStars(dio, jotaro):
 
     image = cv2.inpaint(image, mask, 2, cv2.INPAINT_NS)
     cv2.imwrite("finished.jpg", image)
+
+    Clock.schedule_once(on_finish, 0)
 
 
 # use this to resize image if its too large image = cv2.resize(image, (800,800))

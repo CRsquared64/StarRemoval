@@ -1,3 +1,5 @@
+from threading import Thread
+
 import kivy
 from kivy import Logger
 from kivy.app import App
@@ -32,7 +34,7 @@ class StarRemoval(App):
         self.current_threshold = thresh
 
     def process(self):
-        Logger.info("Starting to process images")
+        Logger.info("Starting to process image")
 
         path = self.current_image_path
 
@@ -41,8 +43,17 @@ class StarRemoval(App):
 
         thresh = self.current_threshold
         thresh = float(thresh)
-        ImageStar.RemoveStars(path, thresh)
+
+
+        thread = Thread(target=ImageStar.RemoveStars, args=(path, thresh, self.process_finished))
+        thread.start()
+
+
+
+    def process_finished(self, _elapsed_time):
+        Logger.info("Finished processing image")
         self.root.get_screen("MainScreen").ids["after_image"].source = 'finished.jpg'
+
 
 
 class sl(ScreenManager):
