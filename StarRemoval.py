@@ -78,7 +78,8 @@ class StarRemoval(App):
 
 
     def set_stars_amount(self, stars):
-        print(stars)
+        stars = str(stars)
+        self.root.get_screen("MainScreen").ids["starcounter"].text = f"Stars Detected: {stars}"
 
 
 
