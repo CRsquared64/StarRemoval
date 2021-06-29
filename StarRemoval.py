@@ -49,8 +49,9 @@ class StarRemoval(App):
         self.root.get_screen("MainScreen").ids["path_button"].text = str(paths)
 
         Logger.info(f"Current path set to {paths}")
-        self.current_image_path = paths
-        self.root.get_screen("MainScreen").ids["before_image"].source = str(paths[0])
+        if len(paths) > 0:
+            self.current_image_path = paths[0]
+            self.root.get_screen("MainScreen").ids["before_image"].source = str(paths[0])
 
     def set_threshold(self, thresh):
         Logger.info(f"Current threshold set to {thresh}")
@@ -70,10 +71,11 @@ class StarRemoval(App):
 
 
         thread = Thread(target=starFunctions.remove_stars, args=(path, thresh, self.process_finished,
-                                                                self.set_processing_text, self.set_stars_amount, self.time_taken))
+                                                                self.set_processing_text, self.set_time_taken, self.set_stars_amount))
         thread.start()
         self.root.get_screen("MainScreen").ids["process_button"].disabled = True
         self.root.get_screen("MainScreen").ids["after_image"].source = ""
+
 
     @mainloop
     def process_finished(self):
@@ -88,9 +90,12 @@ class StarRemoval(App):
     def set_processing_text(self, new_text):
         self.root.get_screen("MainScreen").ids["process_label"].text = new_text
 
+    @mainloop
+    def set_time_taken(self, time):
+        self.root.get_screen("MainScreen").ids["time"].text = f"Time: {time}"
 
-    def info(self, stars, finished):
-        stars = str(stars)
+    @mainloop
+    def set_stars_amount(self, stars):
         self.root.get_screen("MainScreen").ids["starcounter"].text = f"Stars Detected: {stars}"
 
 

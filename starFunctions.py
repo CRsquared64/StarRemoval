@@ -8,10 +8,8 @@ from kivy import Logger
 from kivy.clock import Clock
 
 
-def remove_stars(dio, jotaro, on_finish, _set_processing_text, _set_stars_amount, time_taken):
-    set_processing_text = lambda text: Clock.schedule_once(lambda _elapsed_time: _set_processing_text(text), 0)
-    set_stars_amount = lambda amount: Clock.schedule_once(lambda _elapsed_time: _set_stars_amount(amount), 0)
-    time_taken = lambda amount: Clock.schedule_once(lambda _elapsed_time: time_taken(amount), 0)
+def remove_stars(path, threshold, on_finish_callback, set_processing_text, set_stars_amount, set_time_taken):
+
 
     start = time.time()
     image = cv2.imread(path)
@@ -64,7 +62,7 @@ def remove_stars(dio, jotaro, on_finish, _set_processing_text, _set_stars_amount
     Logger.info(f"Processor: Finished in {time.time() - start}")
     set_processing_text("Done")
     finished_time = time.time() - start
-    time_taken(finished_time)
+    set_time_taken(finished_time)
 
     on_finish_callback()
 
