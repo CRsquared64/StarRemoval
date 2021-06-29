@@ -1,6 +1,7 @@
 from tkinter import Tk, filedialog
 
 # Have to do this first because kivy breaks tkinter
+#cool iguess
 window = Tk()
 window.withdraw()
 
@@ -57,7 +58,7 @@ class StarRemoval(App):
 
 
         thread = Thread(target=starFunctions.remove_stars, args=(path, thresh, self.process_finished,
-                                                                self.set_processing_text, self.set_stars_amount))
+                                                                self.set_processing_text, self.set_stars_amount, self.time_taken))
         thread.start()
         self.root.get_screen("MainScreen").ids["process_button"].disabled = True
         self.root.get_screen("MainScreen").ids["after_image"].source = ""
@@ -77,7 +78,7 @@ class StarRemoval(App):
         self.root.get_screen("MainScreen").ids["process_label"].text = new_text
 
 
-    def set_stars_amount(self, stars):
+    def info(self, stars, finished):
         stars = str(stars)
         self.root.get_screen("MainScreen").ids["starcounter"].text = f"Stars Detected: {stars}"
 
