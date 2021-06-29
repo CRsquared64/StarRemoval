@@ -8,8 +8,8 @@ from kivy import Logger
 from kivy.clock import Clock
 
 
-def remove_stars(path, threshold, on_finish_callback, set_processing_text, set_stars_amount, set_time_taken):
-
+def remove_stars(path, threshold, on_finish_callback, set_stars_amount, set_time_taken):
+    Logger.info("Processor: Loading image and converting to grey")
 
     start = time.time()
     image = cv2.imread(path)
@@ -18,18 +18,15 @@ def remove_stars(path, threshold, on_finish_callback, set_processing_text, set_s
     # cv2.imshow('original', image)
     # cv2.imshow('greyscale', imageG)
 
-    Logger.info("Processor: Loaded image and converted to grey")
-    set_processing_text("Loaded image and converted to grey")
 
+    Logger.info("Processor: Loading template")
     template = cv2.imread('star.png', 0)
     w, h = template.shape[::-1]
-    Logger.info("Processor: Loaded template")
-    set_processing_text("Loaded template")
 
+    Logger.info("Processor: Matching template")
     res = cv2.matchTemplate(imageG, template, cv2.TM_CCOEFF_NORMED)
-    Logger.info("Processor: Matched template")
-    set_processing_text("Matched template")
 
+    Logger.info("Processor: Generating mask")
     loc = np.where(res >= threshold)
     # masking by rotem on stackoverflow
     mask = np.zeros_like(imageG)
@@ -45,25 +42,20 @@ def remove_stars(path, threshold, on_finish_callback, set_processing_text, set_s
 
     set_stars_amount(i)
 
-    Logger.info("Processor: Generated mask")
-    set_processing_text("Generated mask")
 
-    set_processing_text("Using Mask...")
+
     Logger.info("Processor: Using Mask...")
     image = cv2.inpaint(image, mask, 2, cv2.INPAINT_NS)
-    Logger.info("Processor: Used mask ")
-    set_processing_text("Used Mask")
+
 
     new_path = os.path.join(os.path.split(path)[0],
                             "no_stars-" + os.path.splitext(os.path.split(path)[1])[0] + "-" + str(threshold) + os.path.splitext(os.path.split(path)[1])[1])
-
-    cv2.imwrite(new_path, image)
-    Logger.info(f"Processor: Wrote image to file "
+    Logger.info(f"Processor: Writing image to file "
                 f"{new_path}")
-    set_processing_text("Saved to file")
+    cv2.imwrite(new_path, image)
+
 
     Logger.info(f"Processor: Finished in {time.time() - start}")
-    set_processing_text("Done")
     finished_time = time.time() - start
     set_time_taken(finished_time)
 

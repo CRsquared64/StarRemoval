@@ -100,12 +100,10 @@ class StarRemoval(App):
 
 
             thread = Thread(target=starFunctions.remove_stars, args=(path, thresh, self.process_finished,
-                                                                     self.set_processing_text,
                                                                      self.set_time_taken,
                                                                      self.set_stars_amount))
             thread.start()
             self.root.get_screen("MainScreen").ids["process_button"].disabled = True
-            self.root.get_screen("MainScreen").ids["process_label"].text = ""
 
 
     @mainloop
@@ -117,11 +115,6 @@ class StarRemoval(App):
 
         if self.amount_running == 0:
             self.root.get_screen("MainScreen").ids["process_button"].disabled = False
-            self.root.get_screen("MainScreen").ids["process_label"].text = ""
-
-    @mainloop
-    def set_processing_text(self, new_text):
-        self.root.get_screen("MainScreen").ids["process_label"].text = new_text
 
     @mainloop
     def set_time_taken(self, time):
