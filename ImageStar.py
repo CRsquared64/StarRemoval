@@ -11,7 +11,7 @@ from kivy.clock import Clock
 def RemoveStars(dio, jotaro, on_finish, _set_processing_text):
     set_processing_text = lambda text: Clock.schedule_once(lambda _elapsed_time: _set_processing_text(text), 0)
 
-
+    global i
     i = 0
 
     start = time.time()

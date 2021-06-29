@@ -7,8 +7,12 @@ from kivy.app import App
 from kivy.core.window import Window
 from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import ScreenManager
+
+import psutil
+
 import ImageStar
 from MainScreen import MainScreen
+
 
 kivy.require('2.0.0')
 
@@ -65,6 +69,11 @@ class StarRemoval(App):
 
     def set_processing_text(self, new_text):
         self.root.get_screen("MainScreen").ids["process_label"].text = new_text
+
+    def info(self):
+        self.Stars = ImageStar.i
+        self.root.get_screen("MainScreen").ids["starcounter"].text = str(self.Stars)
+
 
 
 class sl(ScreenManager):
