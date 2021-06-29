@@ -8,7 +8,7 @@ from kivy import Logger
 from kivy.clock import Clock
 
 
-def RemoveStars(dio, jotaro, on_finish, _set_processing_text):
+def remove_stars(dio, jotaro, on_finish, _set_processing_text):
     set_processing_text = lambda text: Clock.schedule_once(lambda _elapsed_time: _set_processing_text(text), 0)
 
 
@@ -71,4 +71,3 @@ def RemoveStars(dio, jotaro, on_finish, _set_processing_text):
     memory = psutil.virtual_memory()
     Logger.info(f"Processor: Memory used: {memory[2]}")
     Logger.info(f"Processor: Cpu and Memory values may not be accurate, measures full pc usage.")
-

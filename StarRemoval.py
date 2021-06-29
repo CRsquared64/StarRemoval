@@ -7,8 +7,8 @@ from kivy.app import App
 from kivy.core.window import Window
 from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import ScreenManager
-import ImageStar
-from MainScreen import MainScreen
+import starFunctions
+from mainScreen import MainScreen
 
 kivy.require('2.0.0')
 
@@ -23,7 +23,7 @@ class StarRemoval(App):
         Window.size = 850, 800
         Window.minimum_width = 850
         Window.minimum_height = 800
-        return sl()
+        return SM()
 
     def gettext(self, path):
         Logger.info(f"Current path set to {path}")
@@ -46,8 +46,8 @@ class StarRemoval(App):
         thresh = float(thresh)
 
 
-        thread = Thread(target=ImageStar.RemoveStars, args=(path, thresh, self.process_finished,
-                        self.set_processing_text))
+        thread = Thread(target=starFunctions.remove_stars, args=(path, thresh, self.process_finished,
+                                                                self.set_processing_text))
         thread.start()
         self.root.get_screen("MainScreen").ids["process_button"].disabled = True
         self.root.get_screen("MainScreen").ids["after_image"].source = ""
@@ -67,9 +67,9 @@ class StarRemoval(App):
         self.root.get_screen("MainScreen").ids["process_label"].text = new_text
 
 
-class sl(ScreenManager):
-    def __init__(self, *args, **kwargs):
-        super(sl, self).__init__(**kwargs)
+class SM(ScreenManager):
+    def __init__(self, **kwargs):
+        ScreenManager.__init__(self, **kwargs)
         self.add_widget(MainScreen(name="MainScreen"))
 
 
