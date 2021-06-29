@@ -1,3 +1,4 @@
+import threading
 from tkinter import Tk, filedialog
 
 # Have to do this first because kivy breaks tkinter
@@ -14,6 +15,8 @@ from kivy.app import App
 from kivy.core.window import Window
 from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import ScreenManager
+from kivy.clock import Clock
+
 
 import psutil
 
@@ -21,6 +24,14 @@ import starFunctions
 from mainScreen import MainScreen
 
 kivy.require('2.0.0')
+
+
+
+def mainloop(function):
+    def wrapper(*args, **kwargs):
+        Clock.schedule_once(lambda _elapsed_time: function(*args, **kwargs), 0)
+
+    return wrapper
 
 
 class StarRemoval(App):
@@ -62,9 +73,8 @@ class StarRemoval(App):
         self.root.get_screen("MainScreen").ids["process_button"].disabled = True
         self.root.get_screen("MainScreen").ids["after_image"].source = ""
 
-
-
-    def process_finished(self, _elapsed_time):
+    @mainloop
+    def process_finished(self):
         Logger.info("Finished processing image")
         self.root.get_screen("MainScreen").ids["after_image"].source = str(os.path.splitext(self.current_image_path)[0] + "-no_stars-" + str(self.current_threshold) +
                                                                            os.path.splitext(self.current_image_path)[1])
@@ -72,13 +82,13 @@ class StarRemoval(App):
         self.root.get_screen("MainScreen").ids["process_button"].disabled = False
         self.root.get_screen("MainScreen").ids["process_label"].text = ""
 
-
+    @mainloop
     def set_processing_text(self, new_text):
         self.root.get_screen("MainScreen").ids["process_label"].text = new_text
 
-
+    @mainloop
     def set_stars_amount(self, stars):
-        print(stars)
+        print(stars, threading.current_thread())
 
 
 
