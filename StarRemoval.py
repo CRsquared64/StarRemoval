@@ -1,3 +1,10 @@
+from tkinter import Tk, filedialog
+
+# Have to do this first because kivy breaks tkinter
+window = Tk()
+window.withdraw()
+
+
 import os
 from threading import Thread
 
@@ -10,8 +17,8 @@ from kivy.uix.screenmanager import ScreenManager
 
 import psutil
 
-import ImageStar
-from MainScreen import MainScreen
+import starFunctions
+from mainScreen import MainScreen
 
 kivy.require('2.0.0')
 
@@ -28,7 +35,7 @@ class StarRemoval(App):
         Window.minimum_height = 800
         return SM()
 
-    def gettext(self, path):
+    def get_text(self, path):
         Logger.info(f"Current path set to {path}")
         self.current_image_path = path
         self.root.get_screen("MainScreen").ids["before_image"].source = path
@@ -73,6 +80,12 @@ class StarRemoval(App):
         self.Stars = ImageStar.i
         self.root.get_screen("MainScreen").ids["starcounter"].text = str(self.Stars)
 
+
+
+    def file_explorer(self):
+        paths = filedialog.askopenfilenames()
+        Logger.debug(f"Paths set to {paths}")
+        self.root.get_screen("MainScreen").ids["path_text_input"].text = paths
 
 
 class SM(ScreenManager):
