@@ -23,22 +23,16 @@
                 on_texture: self.height = self.texture.height
                 size_hint_y: None
 
-            BoxLayout:
-                orientation: "horizontal"
-                size_hint_y: None
-                height: path_text_input.font_size + 15
 
-                TextInput:
-                    id: path_text_input
 
-                    hint_text: 'Image Path'
-                    on_text: app.get_text(args[1])
-                    multiline: False
+            Button:
+                id: path_button
+                text: "Open File"
+                text_size: self.size
+                halign: "center"
+                valign: "center"
 
-                Button:
-                    text: "Open File"
-
-                    on_release: app.file_explorer()
+                on_release: app.open_file_explorer()
 
 
             BoxLayout:

@@ -17,9 +17,6 @@ from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import ScreenManager
 from kivy.clock import Clock
 
-
-import psutil
-
 import starFunctions
 from mainScreen import MainScreen
 
@@ -46,14 +43,20 @@ class StarRemoval(App):
         Window.minimum_height = 800
         return SM()
 
-    def get_text(self, path):
-        Logger.info(f"Current path set to {path}")
-        self.current_image_path = path
-        self.root.get_screen("MainScreen").ids["before_image"].source = path
 
-    def threshold(self, thresh):
+    def open_file_explorer(self):
+        paths = filedialog.askopenfilenames()
+        Logger.debug(f"Paths set to {paths}")
+        self.root.get_screen("MainScreen").ids["path_button"].text = str(paths)
+
+        Logger.info(f"Current path set to {paths}")
+        self.current_image_path = paths
+        self.root.get_screen("MainScreen").ids["before_image"].source = str(paths[0])
+
+    def set_threshold(self, thresh):
         Logger.info(f"Current threshold set to {thresh}")
         self.current_threshold = thresh
+
 
     def process(self):
         Logger.info("Starting to process image")
@@ -91,11 +94,6 @@ class StarRemoval(App):
         print(stars, threading.current_thread())
 
 
-
-    def file_explorer(self):
-        paths = filedialog.askopenfilenames()
-        Logger.debug(f"Paths set to {paths}")
-        self.root.get_screen("MainScreen").ids["path_text_input"].text = str(paths[0])
 
 
 class SM(ScreenManager):
