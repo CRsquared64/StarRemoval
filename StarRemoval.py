@@ -49,7 +49,7 @@ class StarRemoval(App):
 
 
     def switch_image(self):
-        if self.do_switch_image:
+        if self.do_switch_image and len(self.current_image_paths) > 0:
             current = self.current_image_paths.index(self.current_image_path)
 
             self.root.get_screen("MainScreen").ids["before_image"].source = str(self.current_image_paths[(current + 1) % len(self.current_image_paths)])
@@ -60,14 +60,17 @@ class StarRemoval(App):
         self.do_switch_image = True
 
         paths = filedialog.askopenfilenames()
+        if paths == "":
+            Logger.debug("No paths given, ignoring")
+            return
+
         Logger.debug(f"Paths set to {paths}")
         self.root.get_screen("MainScreen").ids["path_button"].text = str(paths)
 
         Logger.info(f"Current path set to {paths}")
         self.current_image_paths = list(paths)
-        if len(paths) > 0:
-            self.current_image_path = paths[0]
-            self.root.get_screen("MainScreen").ids["before_image"].source = str(paths[0])
+        self.current_image_path = paths[0]
+
 
     def set_threshold(self, thresh):
         Logger.info(f"Current threshold set to {thresh}")
@@ -79,11 +82,10 @@ class StarRemoval(App):
 
         path = self.current_image_path
 
-        if path == "":
+        if path == "" or len(self.current_image_paths) == 0:
             return
 
-        thresh = self.current_threshold
-        thresh = float(thresh)
+        thresh = float(self.current_threshold)
 
 
         thread = Thread(target=starFunctions.remove_stars, args=(path, thresh, self.process_finished,
