@@ -57,7 +57,7 @@ class StarRemoval(App):
 
 
         thread = Thread(target=starFunctions.remove_stars, args=(path, thresh, self.process_finished,
-                                                                self.set_processing_text))
+                                                                self.set_processing_text, self.set_stars_amount))
         thread.start()
         self.root.get_screen("MainScreen").ids["process_button"].disabled = True
         self.root.get_screen("MainScreen").ids["after_image"].source = ""
@@ -76,16 +76,16 @@ class StarRemoval(App):
     def set_processing_text(self, new_text):
         self.root.get_screen("MainScreen").ids["process_label"].text = new_text
 
-    def info(self):
-        self.Stars = ImageStar.i
-        self.root.get_screen("MainScreen").ids["starcounter"].text = str(self.Stars)
+
+    def set_stars_amount(self, stars):
+        print(stars)
 
 
 
     def file_explorer(self):
         paths = filedialog.askopenfilenames()
         Logger.debug(f"Paths set to {paths}")
-        self.root.get_screen("MainScreen").ids["path_text_input"].text = paths
+        self.root.get_screen("MainScreen").ids["path_text_input"].text = str(paths[0])
 
 
 class SM(ScreenManager):

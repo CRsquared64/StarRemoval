@@ -8,11 +8,9 @@ from kivy import Logger
 from kivy.clock import Clock
 
 
-def remove_stars(dio, jotaro, on_finish, _set_processing_text):
+def remove_stars(dio, jotaro, on_finish, _set_processing_text, _set_stars_amount):
     set_processing_text = lambda text: Clock.schedule_once(lambda _elapsed_time: _set_processing_text(text), 0)
-
-    global i
-    i = 0
+    set_stars_amount = lambda amount: Clock.schedule_once(lambda _elapsed_time: _set_stars_amount(amount), 0)
 
     start = time.time()
     threshold = jotaro
@@ -39,6 +37,7 @@ def remove_stars(dio, jotaro, on_finish, _set_processing_text):
     # masking by rotem on stackoverflow
     mask = np.zeros_like(imageG)
 
+    i = 0
     for pt in zip(*loc[::-1]):
         # a = cv2.rectangle(image, pt, (pt[0] + w, pt[1] + h), (0,0,255), 1)
         cv2.rectangle(mask, (pt[0] + 4, pt[1] + 4), (pt[0] + w - 3, pt[1] + h - 3), 255, -1)
@@ -46,6 +45,8 @@ def remove_stars(dio, jotaro, on_finish, _set_processing_text):
         cv2.circle(mask, (pt[0] + 4, pt[1] + 4), (w - h + 3), 255, -3)  # faster method
         # use both methods and it stil workss/might be better idk its late ok
         i = i + 1
+
+    set_stars_amount(i)
 
     Logger.info("Processor: Generated mask")
     set_processing_text("Generated mask")
