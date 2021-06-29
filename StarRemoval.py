@@ -31,8 +31,10 @@ def mainloop(function):
 
 
 class StarRemoval(App):
+    current_image_paths: list[str] = list()
     current_image_path: str = ""
     current_threshold: int = 0
+    do_switch_image = False
 
     def build(self):
         Builder.load_file('MainScreen.kv')
@@ -40,15 +42,29 @@ class StarRemoval(App):
         Window.size = 850, 800
         Window.minimum_width = 850
         Window.minimum_height = 800
+
+        Clock.schedule_interval(lambda _elapsed_time: self.switch_image(), 1)
+
         return SM()
 
 
+    def switch_image(self):
+        if self.do_switch_image:
+            current = self.current_image_paths.index(self.current_image_path)
+
+            self.root.get_screen("MainScreen").ids["before_image"].source = str(self.current_image_paths[(current + 1) % len(self.current_image_paths)])
+            self.current_image_path = str(self.current_image_paths[(current + 1) % len(self.current_image_paths)])
+
+
     def open_file_explorer(self):
+        self.do_switch_image = True
+
         paths = filedialog.askopenfilenames()
         Logger.debug(f"Paths set to {paths}")
         self.root.get_screen("MainScreen").ids["path_button"].text = str(paths)
 
         Logger.info(f"Current path set to {paths}")
+        self.current_image_paths = list(paths)
         if len(paths) > 0:
             self.current_image_path = paths[0]
             self.root.get_screen("MainScreen").ids["before_image"].source = str(paths[0])
@@ -71,7 +87,9 @@ class StarRemoval(App):
 
 
         thread = Thread(target=starFunctions.remove_stars, args=(path, thresh, self.process_finished,
-                                                                self.set_processing_text, self.set_time_taken, self.set_stars_amount))
+                                                                 self.set_processing_text,
+                                                                 self.set_time_taken,
+                                                                 self.set_stars_amount))
         thread.start()
         self.root.get_screen("MainScreen").ids["process_button"].disabled = True
         self.root.get_screen("MainScreen").ids["after_image"].source = ""
