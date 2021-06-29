@@ -65,6 +65,12 @@
             GridLayout:
                 rows: 4
                 cols: 1
+                canvas.before:
+                    Color:
+                        rgba: 0.21, 0.21, 0.21, 1
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
                 Label:
                     id: starcounter
                     text: "The Purple piper plays his tune"
