@@ -32,9 +32,13 @@ def mainloop(function):
 
 class StarRemoval(App):
     current_image_paths: list[str] = list()
-    current_image_path: str = ""
+
+    finished_image_paths: list[str] = list()
+
     current_threshold: int = 0
     do_switch_image = False
+
+    amount_running = 0
 
     def build(self):
         Builder.load_file('MainScreen.kv')
@@ -49,11 +53,17 @@ class StarRemoval(App):
 
 
     def switch_image(self):
-        if self.do_switch_image and len(self.current_image_paths) > 0:
-            current = self.current_image_paths.index(self.current_image_path)
+        if len(self.current_image_paths) > 0:
+            current1 = self.current_image_paths.index(self.root.get_screen("MainScreen").ids["before_image"].source) \
+                if self.root.get_screen("MainScreen").ids["before_image"].source in self.current_image_paths else 0
+            self.root.get_screen("MainScreen").ids["before_image"].source = \
+                str(self.current_image_paths[(current1 + 1) % len(self.current_image_paths)])
 
-            self.root.get_screen("MainScreen").ids["before_image"].source = str(self.current_image_paths[(current + 1) % len(self.current_image_paths)])
-            self.current_image_path = str(self.current_image_paths[(current + 1) % len(self.current_image_paths)])
+        if len(self.finished_image_paths) > 0:
+            current2 = self.finished_image_paths.index(self.root.get_screen("MainScreen").ids["after_image"].source) \
+                if self.root.get_screen("MainScreen").ids["after_image"].source in self.finished_image_paths else 0
+            self.root.get_screen("MainScreen").ids["after_image"].source = \
+                str(self.finished_image_paths[(current2 + 1) % len(self.finished_image_paths)])
 
 
     def open_file_explorer(self):
@@ -69,7 +79,6 @@ class StarRemoval(App):
 
         Logger.info(f"Current path set to {paths}")
         self.current_image_paths = list(paths)
-        self.current_image_path = paths[0]
 
 
     def set_threshold(self, thresh):
@@ -78,33 +87,37 @@ class StarRemoval(App):
 
 
     def process(self):
+        self.finished_image_paths.clear()
+
         Logger.info("Starting to process image")
 
-        path = self.current_image_path
+        for path in self.current_image_paths:
+            self.amount_running += 1
 
-        if path == "" or len(self.current_image_paths) == 0:
-            return
+            Logger.info(f"Processing image from {path}")
 
-        thresh = float(self.current_threshold)
+            thresh = float(self.current_threshold)
 
 
-        thread = Thread(target=starFunctions.remove_stars, args=(path, thresh, self.process_finished,
-                                                                 self.set_processing_text,
-                                                                 self.set_time_taken,
-                                                                 self.set_stars_amount))
-        thread.start()
-        self.root.get_screen("MainScreen").ids["process_button"].disabled = True
-        self.root.get_screen("MainScreen").ids["after_image"].source = ""
+            thread = Thread(target=starFunctions.remove_stars, args=(path, thresh, self.process_finished,
+                                                                     self.set_processing_text,
+                                                                     self.set_time_taken,
+                                                                     self.set_stars_amount))
+            thread.start()
+            self.root.get_screen("MainScreen").ids["process_button"].disabled = True
+            self.root.get_screen("MainScreen").ids["process_label"].text = ""
 
 
     @mainloop
-    def process_finished(self):
-        Logger.info("Finished processing image")
-        self.root.get_screen("MainScreen").ids["after_image"].source = str(os.path.splitext(self.current_image_path)[0] + "-no_stars-" + str(self.current_threshold) +
-                                                                           os.path.splitext(self.current_image_path)[1])
-        self.root.get_screen("MainScreen").ids["after_image"].reload()
-        self.root.get_screen("MainScreen").ids["process_button"].disabled = False
-        self.root.get_screen("MainScreen").ids["process_label"].text = ""
+    def process_finished(self, path):
+        self.amount_running -= 1
+
+        Logger.info(f"Finished processing image {path}")
+        self.finished_image_paths.append(path)
+
+        if self.amount_running == 0:
+            self.root.get_screen("MainScreen").ids["process_button"].disabled = False
+            self.root.get_screen("MainScreen").ids["process_label"].text = ""
 
     @mainloop
     def set_processing_text(self, new_text):

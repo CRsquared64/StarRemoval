@@ -54,9 +54,12 @@ def remove_stars(path, threshold, on_finish_callback, set_processing_text, set_s
     Logger.info("Processor: Used mask ")
     set_processing_text("Used Mask")
 
-    cv2.imwrite(str(os.path.splitext(path)[0] + "-no_stars-" + str(threshold) + os.path.splitext(path)[1]), image)
+    new_path = os.path.join(os.path.split(path)[0],
+                            "no_stars-" + os.path.splitext(os.path.split(path)[1])[0] + "-" + str(threshold) + os.path.splitext(os.path.split(path)[1])[1])
+
+    cv2.imwrite(new_path, image)
     Logger.info(f"Processor: Wrote image to file "
-                f"{str(os.path.splitext(path)[0] + '-no_stars-' + str(threshold) + os.path.splitext(path)[1])}")
+                f"{new_path}")
     set_processing_text("Saved to file")
 
     Logger.info(f"Processor: Finished in {time.time() - start}")
@@ -64,7 +67,7 @@ def remove_stars(path, threshold, on_finish_callback, set_processing_text, set_s
     finished_time = time.time() - start
     set_time_taken(finished_time)
 
-    on_finish_callback()
+    on_finish_callback(new_path)
 
     cpu = psutil.cpu_percent()
     Logger.info(f"Processor: CPU Usage: {cpu}")
