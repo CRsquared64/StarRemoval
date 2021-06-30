@@ -130,7 +130,7 @@ class StarRemoval(App):
 
     @mainloop
     def set_stars_amount(self, stars):
-        self.root.get_screen("MainScreen").ids["star_counter_label"].text = f"Stars Detected: {stars}"
+        self.root.get_screen("MainScreen").ids["star_count_label"].text = f"Stars Detected: {stars}"
 
     @mainloop
     def set_cpu_percent(self, cpu):
