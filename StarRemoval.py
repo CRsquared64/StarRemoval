@@ -80,6 +80,8 @@ class StarRemoval(App):
             for path in current_image_paths:
                 layout.add_widget(ImageProcessingInfoItem(path=path))
 
+            Clock.schedule_once(lambda _elapsed_time: layout.switch_to(layout.tab_list[0]), 0)
+
 
     def switch_image(self):
         if len(self.current_image_paths) > 0:

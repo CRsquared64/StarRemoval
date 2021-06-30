@@ -1,1 +1,59 @@
 <ImageProcessingInfoItem>:
+    BoxLayout:
+        orientation: "horizontal"
+        size_hint: 1, 1
+
+        BoxLayout: # Text
+            orientation: "vertical"
+            size_hint_x: 0.5
+
+
+            Label:
+                id: path_label
+                font_size: 15
+                text_size: self.size
+                halign: "right"
+                valign: "bottom"
+            Label:
+                id: star_count_label
+                font_size: 10
+                text_size: self.size
+            Label:
+                id: time_label
+                font_size: 10
+                text_size: self.size
+
+
+
+        BoxLayout: # Images
+            orientation: "horizontal"
+            size_hint_x: 0.5
+
+            padding: 20
+            spacing: 20
+
+
+            BoxLayout:
+                orientation: "vertical"
+
+                Label:
+                    text: "Before:"
+                    font_size: 20
+                    on_texture: self.height = self.texture.height
+                    size_hint_y: None
+
+                Image:
+                    id: before_image
+
+
+            BoxLayout:
+                orientation: "vertical"
+
+                Label:
+                    text: "After:"
+                    font_size: 20
+                    on_texture: self.height = self.texture.height
+                    size_hint_y: None
+
+                Image:
+                    id: after_image
