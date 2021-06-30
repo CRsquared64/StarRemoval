@@ -6,126 +6,134 @@
             pos: self.pos
             size: self.size
 
+
     BoxLayout:
-        orientation: "horizontal"
-        size_hint: 1, 1
+        orientation: "vertical"
+
+
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint: 1, 1
 
 
 
-        BoxLayout: # Controls
-            orientation: "vertical"
-            size_hint_x: 0.5
-
-
-            Label:
-                text: 'Basic star removal'
-                font_size: 30
-                on_texture: self.height = self.texture.height
-                size_hint_y: None
-
-
-
-            Button:
-                id: path_button
-                text: "Open Files"
-                text_size: self.size
-                halign: "center"
-                valign: "center"
-
-                on_release: app.open_file_explorer()
-
-
-            BoxLayout:
-                size_hint_y: None
-                height: 150
-
+            BoxLayout: # Controls
                 orientation: "vertical"
+                size_hint_x: 0.5
 
-                Widget: # Spacer
-                    size_hint_y: 0.3
 
                 Label:
-                    size_hint_y: 0.2
-
-                    id: threshold_label
-                    text: "Threshold: 0"
-                    text_size: self.size
-                    font_size: 20
-
-                Slider:
-                    size_hint_y: 0.2
-
-                    min: 0
-                    max: 1
-                    on_value: app.set_threshold(args[1])
-                    on_value: threshold_label.text = f"Threshold - {args[1]}"
+                    text: 'Basic star removal'
+                    font_size: 30
+                    on_texture: self.height = self.texture.height
                     size_hint_y: None
-                    height: 50
-
-                Widget: # Spacer
-                    size_hint_y: 0.3
 
 
-            GridLayout:
-                rows: 4
-                cols: 1
-                canvas.before:
-                    Color:
-                        rgba: 0.21, 0.21, 0.21, 1
-                    Rectangle:
-                        size: self.size
-                        pos: self.pos
-                Label:
-                    id: star_count_label
+
+                Button:
+                    id: path_button
+                    text: "Open Files"
+                    text_size: self.size
+                    halign: "center"
+                    valign: "center"
+
+                    on_release: app.open_file_explorer()
+
+
+                BoxLayout:
+                    size_hint_y: None
+                    height: 150
+
+                    orientation: "vertical"
+
+                    Widget: # Spacer
+                        size_hint_y: 0.3
+
+                    Label:
+                        size_hint_y: 0.2
+
+                        id: threshold_label
+                        text: "Threshold: 0"
+                        text_size: self.size
+                        font_size: 20
+
+                    Slider:
+                        size_hint_y: 0.2
+
+                        min: 0
+                        max: 1
+                        on_value: app.set_threshold(args[1])
+                        on_value: threshold_label.text = f"Threshold - {args[1]}"
+                        size_hint_y: None
+                        height: 50
+
+                    Widget: # Spacer
+                        size_hint_y: 0.3
+
+
+                GridLayout:
+                    rows: 2#4
+                    cols: 1
+                    canvas.before:
+                        Color:
+                            rgba: 0.21, 0.21, 0.21, 1
+                        Rectangle:
+                            size: self.size
+                            pos: self.pos
+                    #Label:
+                    #    id: star_count_label
+                    #    font_size: 24
+                    #Label:
+                    #    id: time_label
+                    #    font_size: 24
+                    Label:
+                        id: cpu_usage_label
+                        font_size: 24
+                    Label:
+                        id: ram_usage_label
+                        font_size: 24
+
+
+
+                Button:
+                    id: process_button
+
+                    text: 'REMOVE STARS'
                     font_size: 24
+                    on_press: app.process()
+
+
+
+            # --------------------------------------------------------------------------------------------------------------
+
+
+            BoxLayout: # Images
+                orientation: "vertical"
+                size_hint_x: 0.5
+
+                padding: 20
+                spacing: 20
+
+
                 Label:
-                    id: time_label
-                    font_size: 24
+                    text: "Before:"
+                    font_size: 20
+                    on_texture: self.height = self.texture.height
+                    size_hint_y: None
+
+                Image:
+                    id: before_image
+
+
                 Label:
-                    id: cpu_usage_label
-                    font_size: 24
-                Label:
-                    id: ram_usage_label
-                    font_size: 24
+                    text: "After:"
+                    font_size: 20
+                    on_texture: self.height = self.texture.height
+                    size_hint_y: None
+
+                Image:
+                    id: after_image
 
 
-
-            Button:
-                id: process_button
-
-                text: 'REMOVE STARS'
-                font_size: 24
-                on_press: app.process()
-
-
-
-        # --------------------------------------------------------------------------------------------------------------
-
-
-        BoxLayout: # Images
-            orientation: "vertical"
-            size_hint_x: 0.5
-
-            padding: 20
-            spacing: 20
-
-
-            Label:
-                text: "Before:"
-                font_size: 20
-                on_texture: self.height = self.texture.height
-                size_hint_y: None
-
-            Image:
-                id: before_image
-
-
-            Label:
-                text: "After:"
-                font_size: 20
-                on_texture: self.height = self.texture.height
-                size_hint_y: None
-
-            Image:
-                id: after_image
-
+        ImageProcessingInfo:
+            size_hint_y: 0.25

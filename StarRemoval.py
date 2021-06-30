@@ -19,6 +19,7 @@ from kivy.clock import Clock
 import starFunctions
 import systemInfo
 from mainScreen import MainScreen
+from imageProcessingInfo import ImageProcessingInfo
 
 kivy.require('2.0.0')
 
@@ -43,7 +44,7 @@ class StarRemoval(App):
 
     def build(self):
         Builder.load_file('kvLang/MainScreen.kv')
-        Builder.load_file('kvLang/MainScreen.kv')
+        Builder.load_file('kvLang/ImageProcessingInfo.kv')
 
         Window.size = 850, 800
         Window.minimum_width = 850
