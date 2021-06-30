@@ -106,7 +106,7 @@ class StarRemoval(App):
             thread.start()
             self.root.get_screen("MainScreen").ids["process_button"].disabled = True
 
-            info_thread = Thread(target=systemInfo.computer_usage, args=(self.cpu_percent, self.memory_percent))
+            info_thread = Thread(target=systemInfo.computer_usage, args=(self.cpu_percent))
 
             info_thread.start()
 
