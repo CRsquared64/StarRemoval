@@ -50,7 +50,7 @@ class StarRemoval(App):
 
         Clock.schedule_interval(lambda _elapsed_time: self.switch_image(), 1)
 
-        info_thread = Thread(target=systemInfo.computer_usage, args=(self.cpu_percent))
+        info_thread = Thread(target=systemInfo.computer_usage, args=(self.cpu_percent, self.memory_percent))
 
         info_thread.start()
 
@@ -133,7 +133,11 @@ class StarRemoval(App):
 
     @mainloop
     def cpu_percent(self, cpu):
-        self.root.get_screen("MainScreen").ids["cpusage"].text = f"CPU perccent: {cpu}"
+        self.root.get_screen("MainScreen").ids["cpusage"].text = f"CPU percent: {cpu}"
+
+    @mainloop
+    def memory_percent(self, memory):
+        self.root.get_screen("MainScreen").ids["ramuseage"].text = f"RAM percent: {memory}"
 
 
 
