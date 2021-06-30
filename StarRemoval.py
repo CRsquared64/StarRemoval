@@ -42,7 +42,8 @@ class StarRemoval(App):
     amount_running = 0
 
     def build(self):
-        Builder.load_file('MainScreen.kv')
+        Builder.load_file('kvLang/MainScreen.kv')
+        Builder.load_file('kvLang/MainScreen.kv')
 
         Window.size = 850, 800
         Window.minimum_width = 850
