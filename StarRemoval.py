@@ -17,6 +17,7 @@ from kivy.uix.screenmanager import ScreenManager
 from kivy.clock import Clock
 
 import starFunctions
+import systemInfo
 from mainScreen import MainScreen
 
 kivy.require('2.0.0')
@@ -105,6 +106,10 @@ class StarRemoval(App):
             thread.start()
             self.root.get_screen("MainScreen").ids["process_button"].disabled = True
 
+            info_thread = Thread(target=systemInfo.computer_usage, args=(self.cpu_percent, self.memory_percent))
+
+            info_thread.start()
+
 
     @mainloop
     def process_finished(self, path):
@@ -123,6 +128,10 @@ class StarRemoval(App):
     @mainloop
     def set_stars_amount(self, stars):
         self.root.get_screen("MainScreen").ids["starcounter"].text = f"Stars Detected: {stars}"
+
+    @mainloop
+    def cpu_percent(self, cpu):
+        self.root.get_screen("MainScreen").ids["cpusage"].text = f"CPU perccent: {cpu}"
 
 
 

@@ -66,3 +66,4 @@ def remove_stars(path, threshold, on_finish_callback, set_stars_amount, set_time
     memory = psutil.virtual_memory()
     Logger.info(f"Processor: Memory used: {memory[2]}")
     Logger.info(f"Processor: Cpu and Memory values may not be accurate, measures full pc usage.")
+
