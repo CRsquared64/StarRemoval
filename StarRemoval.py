@@ -100,8 +100,8 @@ class StarRemoval(App):
 
 
             thread = Thread(target=starFunctions.remove_stars, args=(path, thresh, self.process_finished,
-                                                                     self.set_time_taken,
-                                                                     self.set_stars_amount))
+                                                                     self.set_stars_amount, self.set_time_taken
+                                                                     ))
             thread.start()
             self.root.get_screen("MainScreen").ids["process_button"].disabled = True
 
