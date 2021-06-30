@@ -1,6 +1,10 @@
 from tkinter import Tk, filedialog
 
 # Have to do this first because kivy breaks tkinter
+from kivy.properties import ListProperty
+from kivy.uix.label import Label
+from kivy.uix.tabbedpanel import TabbedPanel, TabbedPanelItem
+
 window = Tk()
 window.withdraw()
 
@@ -19,7 +23,7 @@ from kivy.clock import Clock
 import starFunctions
 import systemInfo
 from mainScreen import MainScreen
-from imageProcessingInfo import ImageProcessingInfo
+from imageProcessingInfoItem import ImageProcessingInfoItem
 
 kivy.require('2.0.0')
 
@@ -33,7 +37,7 @@ def mainloop(function):
 
 
 class StarRemoval(App):
-    current_image_paths: list[str] = list()
+    current_image_paths: list[str] = ListProperty()
 
     finished_image_paths: list[str] = list()
 
@@ -44,19 +48,37 @@ class StarRemoval(App):
 
     def build(self):
         Builder.load_file('kvLang/MainScreen.kv')
-        Builder.load_file('kvLang/ImageProcessingInfo.kv')
+        Builder.load_file('kvLang/ImageProcessingInfoItem.kv')
 
         Window.size = 850, 800
         Window.minimum_width = 850
         Window.minimum_height = 800
 
         Clock.schedule_interval(lambda _elapsed_time: self.switch_image(), 1)
+        Clock.schedule_once(lambda _elapsed_time: self.on_current_image_paths(self, self.current_image_paths), 0)
 
         info_thread = Thread(target=systemInfo.computer_usage, args=(self.set_cpu_percent, self.set_memory_percent))
 
         info_thread.start()
 
         return SM()
+
+
+    def on_current_image_paths(self, _instance, current_image_paths):
+        layout: TabbedPanel = self.root.get_screen("MainScreen").ids["image_processing_info_layout"]
+
+        layout.clear_tabs()
+
+        if len(current_image_paths) == 0:
+            panel = TabbedPanelItem(text="Warning!")
+            panel.add_widget(Label(text="No images selected"))
+            layout.add_widget(panel)
+
+            Clock.schedule_once(lambda _elapsed_time: layout.switch_to(panel), 0)
+
+        else:
+            for path in current_image_paths:
+                layout.add_widget(ImageProcessingInfoItem(path=path))
 
 
     def switch_image(self):
