@@ -50,7 +50,7 @@ class StarRemoval(App):
 
         Clock.schedule_interval(lambda _elapsed_time: self.switch_image(), 1)
 
-        info_thread = Thread(target=systemInfo.computer_usage, args=(self.cpu_percent, self.memory_percent))
+        info_thread = Thread(target=systemInfo.computer_usage, args=(self.set_cpu_percent, self.set_memory_percent))
 
         info_thread.start()
 
@@ -123,21 +123,22 @@ class StarRemoval(App):
         if self.amount_running == 0:
             self.root.get_screen("MainScreen").ids["process_button"].disabled = False
 
+
     @mainloop
     def set_time_taken(self, time):
-        self.root.get_screen("MainScreen").ids["time"].text = f"Time: {time}"
+        self.root.get_screen("MainScreen").ids["time_label"].text = f"Time: {time}"
 
     @mainloop
     def set_stars_amount(self, stars):
-        self.root.get_screen("MainScreen").ids["starcounter"].text = f"Stars Detected: {stars}"
+        self.root.get_screen("MainScreen").ids["star_counter_label"].text = f"Stars Detected: {stars}"
 
     @mainloop
-    def cpu_percent(self, cpu):
-        self.root.get_screen("MainScreen").ids["cpusage"].text = f"CPU percent: {cpu}"
+    def set_cpu_percent(self, cpu):
+        self.root.get_screen("MainScreen").ids["cpu_usage_label"].text = f"CPU percent: {cpu}"
 
     @mainloop
-    def memory_percent(self, memory):
-        self.root.get_screen("MainScreen").ids["ramuseage"].text = f"RAM percent: {memory}"
+    def set_memory_percent(self, memory):
+        self.root.get_screen("MainScreen").ids["ram_usage_label"].text = f"RAM percent: {memory}"
 
 
 
