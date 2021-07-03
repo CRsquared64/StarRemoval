@@ -28,6 +28,7 @@ class ImageProcessingInfoItem(TabbedPanelItem):
         self.text = str(os.path.splitext(os.path.basename(value))[0])
         self.ids["before_image"].source = value
         self.ids["path_label"].text = f"Path: {value}"
+        self.ids["threshold_label"].text = f"Threshold: {App.get_running_app().current_threshold}"
 
         self.update_thread()
 
@@ -46,7 +47,6 @@ class ImageProcessingInfoItem(TabbedPanelItem):
                                                                 {"stars": self.set_stars_amount,
                                                                  "finished_path": self.set_finished_path,
                                                                  "time": self.set_time_taken}))
-
         self.thread.start()
 
     @mainloop
