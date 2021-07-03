@@ -5,6 +5,8 @@ from kivy.properties import ListProperty
 from kivy.uix.label import Label
 from kivy.uix.tabbedpanel import TabbedPanel, TabbedPanelItem
 
+import killableThreads
+from killableThreads import KillableThread
 from scheduling_declarations import mainloop, next_frame
 
 window = Tk()
@@ -51,7 +53,8 @@ class StarRemoval(App):
         Window.minimum_width = 850
         Window.minimum_height = 800
 
-        info_thread = Thread(target=systemInfo.computer_usage, args=(self.set_cpu_percent, self.set_memory_percent))
+        info_thread = \
+            KillableThread(target=systemInfo.computer_usage, args=(self.set_cpu_percent, self.set_memory_percent))
 
         info_thread.start()
 
@@ -109,3 +112,5 @@ class SM(ScreenManager):
 if __name__ == '__main__':
     Star = StarRemoval()
     Star.run()
+
+    killableThreads.kill_all()

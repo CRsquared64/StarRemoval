@@ -1,4 +1,4 @@
-# From http://tomerfiliba.com/recipes/Thread2/
+# From http://tomerfiliba.com/recipes/Thread2/ adapted by GreenJon902
 
 
 
@@ -11,7 +11,8 @@ def _async_raise(tid, exctype):
     """raises the exception, performs cleanup if needed"""
     if not inspect.isclass(exctype):
         raise TypeError("Only types can be raised (not instances)")
-    res = ctypes.pythonapi.PyThreadState_SetAsyncExc(tid, ctypes.py_object(exctype))
+    res = ctypes.pythonapi.PyThreadState_SetAsyncExc(ctypes.c_long(tid),
+                                                     ctypes.py_object(exctype))
     if res == 0:
         raise ValueError("invalid thread id")
     elif res != 1:
@@ -22,9 +23,14 @@ def _async_raise(tid, exctype):
 
 
 class KillableThread(threading.Thread):
+    def __init__(self, *args, **kwargs):
+        threading.Thread.__init__(self, *args, **kwargs)
+        threads.append(self)
+        print(self.__str__())
+
     def _get_my_tid(self):
         """determines this (self's) thread id"""
-        if not self.isAlive():
+        if not self.is_alive():
             raise threading.ThreadError("the thread is not active")
 
         # do we have it cached?
@@ -47,3 +53,13 @@ class KillableThread(threading.Thread):
         """raises SystemExit in the context of the given thread, which should
         cause the thread to exit silently (unless caught)"""
         self.raise_exc(SystemExit)
+
+
+threads: list[KillableThread] = list()
+
+
+
+def kill_all():
+    for thread in threads:
+        print(thread, type(thread))
+        thread.terminate()
