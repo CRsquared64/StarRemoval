@@ -21,6 +21,12 @@ class ImageProcessingInfoItem(TabbedPanelItem):
     def __init__(self, **kwargs):
         TabbedPanelItem.__init__(self, **kwargs)
 
+    def restart(self):
+        Logger.debug("Restarting")
+
+        self.ids["threshold_label"].text = f"Threshold: {App.get_running_app().current_threshold}"
+        self.update_thread()
+
     @next_frame
     def on_path(self, _instance, value):
         Logger.debug(f"ImageProcessingInfoItem: Path set to {self.path}")
@@ -33,9 +39,6 @@ class ImageProcessingInfoItem(TabbedPanelItem):
         self.update_thread()
 
     def update_thread(self):
-        if self.thread is not None:
-            raise RuntimeError("Cannot create thread id it is already created")
-
         if self.thread is not None:
             Logger.debug(f"ImageProcessingInfoItem: Terminating current thread")
             self.thread.terminate()
