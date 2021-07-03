@@ -1,18 +1,19 @@
 import os
 
-from kivy.clock import Clock
+from kivy.properties import StringProperty
 from kivy.uix.tabbedpanel import TabbedPanelItem
+
+from scheduling_declarations import next_frame
 
 
 class ImageProcessingInfoItem(TabbedPanelItem):
-    def __init__(self, path, **kwargs):
+    path = StringProperty()
+
+    def __init__(self, **kwargs):
         TabbedPanelItem.__init__(self, **kwargs)
 
-        self.path = path
-        self.text = str(os.path.splitext(os.path.basename(path))[0])
-
-        Clock.schedule_once(lambda _elapsed_time: self.update(), 0)
-
-    def update(self):
-        self.ids["before_image"].source = self.path
-        self.ids["path_label"].text = f"Path: {self.path}"
+    @next_frame
+    def on_path(self, _instance, value):
+        self.text = str(os.path.splitext(os.path.basename(value))[0])
+        self.ids["before_image"].source = value
+        self.ids["path_label"].text = f"Path: {value}"
