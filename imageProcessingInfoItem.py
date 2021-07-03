@@ -44,7 +44,8 @@ class ImageProcessingInfoItem(TabbedPanelItem):
 
         self.thread = KillableThread(target=remove_stars, args=(self.path, App.get_running_app().current_threshold,
                                                                 {"stars": self.set_stars_amount,
-                                                                 "finished_path": self.set_finished_path}))
+                                                                 "finished_path": self.set_finished_path,
+                                                                 "time": self.set_time_taken}))
 
         self.thread.start()
 
@@ -52,6 +53,11 @@ class ImageProcessingInfoItem(TabbedPanelItem):
     def set_stars_amount(self, amount):
         Logger.debug(f"Stars amount set to {amount}")
         self.ids["star_count_label"].text = f"Stars: {amount}"
+
+    @mainloop
+    def set_time_taken(self, amount):
+        Logger.debug(f"Time taken set to {amount}")
+        self.ids["time_label"].text = f"Time: {amount}"
 
     @mainloop
     def set_finished_path(self, path):

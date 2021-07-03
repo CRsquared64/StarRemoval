@@ -57,5 +57,6 @@ def remove_stars(path, threshold, callbacks):
 
 
     Logger.info(f"Processor: Finished in {time.time() - start}")
+    callbacks["time"](time.time() - start)
 
 
