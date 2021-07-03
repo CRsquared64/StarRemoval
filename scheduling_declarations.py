@@ -5,7 +5,7 @@ from kivy.clock import Clock
 
 def mainloop(function):
     def wrapper(*args, **kwargs):
-        if threading.current_thread():
+        if threading.current_thread() == threading.main_thread():
             function(*args, **kwargs)
 
         else:
