@@ -13,7 +13,7 @@
 
         BoxLayout:
             orientation: "horizontal"
-            size_hint: 1, 0.5
+            size_hint: 1, 1  # 0.5
 
 
 
@@ -107,32 +107,32 @@
             # --------------------------------------------------------------------------------------------------------------
 
 
-            BoxLayout: # Images
-                orientation: "vertical"
-                size_hint_x: 0.5
+            #BoxLayout: # Images
+            #    orientation: "vertical"
+            #    size_hint_x: 0.5
 
-                padding: 20
-                spacing: 20
-
-
-                Label:
-                    text: "Before:"
-                    font_size: 20
-                    on_texture: self.height = self.texture.height
-                    size_hint_y: None
-
-                Image:
-                    id: before_image
+            #    padding: 20
+            #    spacing: 20
 
 
-                Label:
-                    text: "After:"
-                    font_size: 20
-                    on_texture: self.height = self.texture.height
-                    size_hint_y: None
+            #    Label:
+            #        text: "Before:"
+            #        font_size: 20
+            #        on_texture: self.height = self.texture.height
+            #        size_hint_y: None
 
-                Image:
-                    id: after_image
+            #    Image:
+            #        id: before_image
+
+
+            #    Label:
+            #        text: "After:"
+            #        font_size: 20
+            #        on_texture: self.height = self.texture.height
+            #        size_hint_y: None
+
+            #    Image:
+            #        id: after_image
 
 
         TabbedPanel:
