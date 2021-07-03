@@ -37,7 +37,7 @@ def mainloop(function):
 
 
 class StarRemoval(App):
-    current_image_paths: list[str] = ListProperty()
+    image_paths: list[str] = ListProperty()
 
     finished_image_paths: list[str] = list()
 
@@ -55,7 +55,7 @@ class StarRemoval(App):
         Window.minimum_height = 800
 
         Clock.schedule_interval(lambda _elapsed_time: self.switch_image(), 1)
-        Clock.schedule_once(lambda _elapsed_time: self.on_current_image_paths(self, self.current_image_paths), 0)
+        Clock.schedule_once(lambda _elapsed_time: self.on_image_paths(self, self.image_paths), 0)
 
         info_thread = Thread(target=systemInfo.computer_usage, args=(self.set_cpu_percent, self.set_memory_percent))
 
@@ -64,7 +64,7 @@ class StarRemoval(App):
         return SM()
 
 
-    def on_current_image_paths(self, _instance, current_image_paths):
+    def on_image_paths(self, _instance, current_image_paths):
         layout: TabbedPanel = self.root.get_screen("MainScreen").ids["image_processing_info_layout"]
 
         layout.clear_tabs()
@@ -84,11 +84,11 @@ class StarRemoval(App):
 
 
     def switch_image(self):
-        if len(self.current_image_paths) > 0:
-            current1 = self.current_image_paths.index(self.root.get_screen("MainScreen").ids["before_image"].source) \
-                if self.root.get_screen("MainScreen").ids["before_image"].source in self.current_image_paths else 0
+        if len(self.image_paths) > 0:
+            current1 = self.image_paths.index(self.root.get_screen("MainScreen").ids["before_image"].source) \
+                if self.root.get_screen("MainScreen").ids["before_image"].source in self.image_paths else 0
             self.root.get_screen("MainScreen").ids["before_image"].source = \
-                str(self.current_image_paths[(current1 + 1) % len(self.current_image_paths)])
+                str(self.image_paths[(current1 + 1) % len(self.image_paths)])
 
         if len(self.finished_image_paths) > 0:
             current2 = self.finished_image_paths.index(self.root.get_screen("MainScreen").ids["after_image"].source) \
@@ -105,11 +105,8 @@ class StarRemoval(App):
             Logger.debug("No paths given, ignoring")
             return
 
-        Logger.debug(f"Paths set to {paths}")
-        self.root.get_screen("MainScreen").ids["path_button"].text = str(paths)
-
-        Logger.info(f"Current path set to {paths}")
-        self.current_image_paths = list(paths)
+        Logger.debug(f"Added paths {paths}")
+        self.image_paths = self.image_paths + list(paths)
 
 
     def set_threshold(self, thresh):
@@ -122,7 +119,7 @@ class StarRemoval(App):
 
         Logger.info("Starting to process image")
 
-        for path in self.current_image_paths:
+        for path in self.image_paths:
             self.amount_running += 1
 
             Logger.info(f"Processing image from {path}")
