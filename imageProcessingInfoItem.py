@@ -55,8 +55,6 @@ class ImageProcessingInfoItem(TabbedPanelItem):
 
     @mainloop
     def set_finished_path(self, path):
-        print(threading.current_thread())
-
         Logger.debug(f"Finished path set to {path}")
         self.finished_path = path
 
