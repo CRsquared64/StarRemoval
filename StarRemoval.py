@@ -5,6 +5,8 @@ from kivy.properties import ListProperty
 from kivy.uix.label import Label
 from kivy.uix.tabbedpanel import TabbedPanel, TabbedPanelItem
 
+from scheduling_declarations import mainloop, next_frame
+
 window = Tk()
 window.withdraw()
 
@@ -29,11 +31,6 @@ kivy.require('2.0.0')
 
 
 
-def mainloop(function):
-    def wrapper(*args, **kwargs):
-        Clock.schedule_once(lambda _elapsed_time: function(*args, **kwargs), 0)
-
-    return wrapper
 
 
 class StarRemoval(App):
@@ -159,10 +156,12 @@ class StarRemoval(App):
             self.root.get_screen("MainScreen").ids["process_button"].disabled = False
 
     @mainloop
+    @next_frame  # Makes @mainloop redundant but it improves understandability because it does need to be both
     def set_cpu_percent(self, cpu):
         self.root.get_screen("MainScreen").ids["cpu_usage_label"].text = f"CPU percent: {cpu}"
 
     @mainloop
+    @next_frame
     def set_memory_percent(self, memory):
         self.root.get_screen("MainScreen").ids["ram_usage_label"].text = f"RAM percent: {memory}"
 
