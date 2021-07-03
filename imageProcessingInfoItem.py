@@ -27,16 +27,16 @@ class ImageProcessingInfoItem(TabbedPanelItem):
         self.ids["before_image"].source = value
         self.ids["path_label"].text = f"Path: {value}"
 
-        if self.thread is not None:
-            Logger.debug(f"ImageProcessingInfoItem: Terminating old thread")
-            self.thread.terminate()
-            self.thread = None
+        self.update_thread()
 
-        self.create_thread()
-
-    def create_thread(self):
+    def update_thread(self):
         if self.thread is not None:
             raise RuntimeError("Cannot create thread id it is already created")
+
+        if self.thread is not None:
+            Logger.debug(f"ImageProcessingInfoItem: Terminating current thread")
+            self.thread.terminate()
+            self.thread = None
 
         Logger.debug(f"ImageProcessingInfoItem: Starting new thread")
 
