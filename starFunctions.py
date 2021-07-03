@@ -8,7 +8,7 @@ from kivy import Logger
 from kivy.clock import Clock
 
 
-def remove_stars(path, threshold, on_finish_callback):
+def remove_stars(path, threshold, callbacks):
     Logger.info("Processor: Loading image and converting to grey")
 
     start = time.time()
@@ -40,6 +40,7 @@ def remove_stars(path, threshold, on_finish_callback):
         # use both methods and it stil workss/might be better idk its late ok
         i = i + 1
 
+    callbacks["stars"](i)
 
 
 
@@ -52,16 +53,9 @@ def remove_stars(path, threshold, on_finish_callback):
     Logger.info(f"Processor: Writing image to file "
                 f"{new_path}")
     cv2.imwrite(new_path, image)
+    callbacks["finished_path"](new_path)
 
 
     Logger.info(f"Processor: Finished in {time.time() - start}")
-    finished_time = time.time() - start
 
-    on_finish_callback(new_path)
-
-    cpu = psutil.cpu_percent()
-    Logger.info(f"Processor: CPU Usage: {cpu}")
-    memory = psutil.virtual_memory()
-    Logger.info(f"Processor: Memory used: {memory[2]}")
-    Logger.info(f"Processor: Cpu and Memory values may not be accurate, measures full pc usage.")
 
