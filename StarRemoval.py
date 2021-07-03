@@ -127,8 +127,7 @@ class StarRemoval(App):
             thresh = float(self.current_threshold)
 
 
-            thread = Thread(target=starFunctions.remove_stars, args=(path, thresh, self.process_finished,
-                                                                     self.set_stars_amount, self.set_time_taken
+            thread = Thread(target=starFunctions.remove_stars, args=(path, thresh, self.process_finished
                                                                      ))
             thread.start()
             self.root.get_screen("MainScreen").ids["process_button"].disabled = True
@@ -145,15 +144,6 @@ class StarRemoval(App):
 
         if self.amount_running == 0:
             self.root.get_screen("MainScreen").ids["process_button"].disabled = False
-
-
-    @mainloop
-    def set_time_taken(self, time):
-        self.root.get_screen("MainScreen").ids["time_label"].text = f"Time: {time}"
-
-    @mainloop
-    def set_stars_amount(self, stars):
-        self.root.get_screen("MainScreen").ids["star_count_label"].text = f"Stars Detected: {stars}"
 
     @mainloop
     def set_cpu_percent(self, cpu):

@@ -8,7 +8,7 @@ from kivy import Logger
 from kivy.clock import Clock
 
 
-def remove_stars(path, threshold, on_finish_callback, set_stars_amount, set_time_taken):
+def remove_stars(path, threshold, on_finish_callback):
     Logger.info("Processor: Loading image and converting to grey")
 
     start = time.time()
@@ -40,7 +40,6 @@ def remove_stars(path, threshold, on_finish_callback, set_stars_amount, set_time
         # use both methods and it stil workss/might be better idk its late ok
         i = i + 1
 
-    set_stars_amount(i)
 
 
 
@@ -57,7 +56,6 @@ def remove_stars(path, threshold, on_finish_callback, set_stars_amount, set_time
 
     Logger.info(f"Processor: Finished in {time.time() - start}")
     finished_time = time.time() - start
-    set_time_taken(finished_time)
 
     on_finish_callback(new_path)
 
