@@ -83,6 +83,18 @@ class StarRemoval(App):
             Clock.schedule_once(lambda _elapsed_time: layout.switch_to(layout.tab_list[0]), 0)
 
 
+    def add_image_path(self, path):
+        layout: TabbedPanel = self.root.get_screen("MainScreen").ids["image_processing_info_layout"]
+
+        tab: ImageProcessingInfoItem
+        for tab in layout.tab_list:
+            if tab.text == "Warning!":
+                layout.remove_widget(tab)
+
+        layout.add_widget(ImageProcessingInfoItem(path=path))
+        Clock.schedule_once(lambda _elapsed_time: layout.switch_to(layout.tab_list[0]), 0)
+
+
     def switch_image(self):
         if len(self.image_paths) > 0:
             current1 = self.image_paths.index(self.root.get_screen("MainScreen").ids["before_image"].source) \
@@ -106,7 +118,8 @@ class StarRemoval(App):
             return
 
         Logger.debug(f"Added paths {paths}")
-        self.image_paths = self.image_paths + list(paths)
+        for path in paths:
+            self.add_image_path(path)
 
 
     def set_threshold(self, thresh):
