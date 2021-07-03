@@ -26,7 +26,6 @@ class KillableThread(threading.Thread):
     def __init__(self, *args, **kwargs):
         threading.Thread.__init__(self, *args, **kwargs)
         threads.append(self)
-        print(self.__str__())
 
     def _get_my_tid(self):
         """determines this (self's) thread id"""
@@ -61,5 +60,4 @@ threads: list[KillableThread] = list()
 
 def kill_all():
     for thread in threads:
-        print(thread, type(thread))
         thread.terminate()
