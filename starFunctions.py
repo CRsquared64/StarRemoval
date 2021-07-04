@@ -6,7 +6,7 @@ import numpy as np
 from kivy import Logger
 
 
-def remove_stars(path, threshold, callbacks):
+def remove_stars(path, threshold, out_path, callbacks):
     Logger.info("Processor: Loading image and converting to grey")
 
     start = time.time()
@@ -46,15 +46,18 @@ def remove_stars(path, threshold, callbacks):
     image = cv2.inpaint(image, mask, 2, cv2.INPAINT_NS)
 
 
-    new_path = os.path.join(os.path.split(path)[0],
-                            "no_stars-" + os.path.splitext(os.path.split(path)[1])[0] + "-" + str(threshold) + os.path.splitext(os.path.split(path)[1])[1])
     Logger.info(f"Processor: Writing image to file "
-                f"{new_path}")
-    cv2.imwrite(new_path, image)
-    callbacks["finished_path"](new_path)
+                f"{out_path}")
+    try:
+        os.makedirs(os.path.split(out_path)[0])
 
+    except FileExistsError:
+        pass
+    cv2.imwrite(out_path, image)
 
     Logger.info(f"Processor: Finished in {time.time() - start}")
     callbacks["time"](time.time() - start)
 
+
+    callbacks["finished"]()
 
