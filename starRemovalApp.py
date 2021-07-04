@@ -5,8 +5,8 @@ from kivy.properties import ListProperty
 from kivy.uix.label import Label
 from kivy.uix.tabbedpanel import TabbedPanel, TabbedPanelItem
 
-import killableThreads
-from killableThreads import KillableThread
+import threadingFuncs
+from threadingFuncs import KillableThread
 from scheduling_declarations import mainloop, next_frame
 
 

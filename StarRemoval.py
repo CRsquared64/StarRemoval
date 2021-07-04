@@ -1,6 +1,7 @@
 if __name__ == '__main__':
     import multiprocessing
     multiprocessing.freeze_support()
+    threading_manager = multiprocessing.Manager()
 
     from tkinter import Tk
     window = Tk()
@@ -11,11 +12,11 @@ if __name__ == '__main__':
     # noinspection PyUnresolvedReferences
     from kivy import *
 
-    import killableThreads
+    import threadingFuncs
     from starRemovalApp import StarRemoval
 
     try:
         Star = StarRemoval()
         Star.run()
     finally:
-        killableThreads.kill_all()
+        threadingFuncs.kill_all()
