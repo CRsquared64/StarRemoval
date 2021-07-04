@@ -1,19 +1,14 @@
 import os
-import threading
-from multiprocessing import Process, Manager
-from threading import Thread
-from typing import Union, Callable
+from typing import Union
 
 from kivy import Logger
 from kivy.app import App
-from kivy.clock import Clock
-from kivy.properties import StringProperty, AliasProperty
+from kivy.properties import StringProperty
 from kivy.uix.tabbedpanel import TabbedPanelItem
 
-from threadingFuncs import KillableThread
 from scheduling_declarations import next_frame, mainloop
 from starFunctions import remove_stars
-
+from threadingFuncs import KillableThread
 
 
 class ImageProcessingInfoItem(TabbedPanelItem):
