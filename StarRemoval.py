@@ -18,6 +18,10 @@ if __name__ == '__main__':
         Logger.info("AppBase: Running app")
         Star = StarRemoval()
         Star.run()
+
+    except Exception as e:
+        raise e
+
     finally:
         Logger.info("AppBase: Killing all other threads")
         amount = threadingFuncs.kill_all()

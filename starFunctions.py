@@ -6,7 +6,7 @@ import numpy as np
 from kivy import Logger
 
 
-def remove_stars(path, threshold, out_path, callbacks):
+def remove_stars(path, threshold, out_path, save_mask, callbacks, mask_path=None):
     Logger.info("Processor: Loading image and converting to grey")
 
     start = time.time()
@@ -40,6 +40,16 @@ def remove_stars(path, threshold, out_path, callbacks):
 
     callbacks["stars"](i)
 
+
+    if save_mask:
+        Logger.debug(f"Saving mask to {mask_path}")
+        try:
+            os.makedirs(os.path.split(mask_path)[0])
+
+        except FileExistsError:
+            pass
+
+        cv2.imwrite(mask_path, mask)
 
 
     Logger.info("Processor: Using Mask...")
