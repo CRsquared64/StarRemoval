@@ -2,9 +2,9 @@
 
 
 
-import threading
-import inspect
 import ctypes
+import inspect
+import threading
 
 from kivy import Logger
 
@@ -53,7 +53,7 @@ class KillableThread(threading.Thread):
     def terminate(self):
         """raises SystemExit in the context of the given thread, which should
         cause the thread to exit silently (unless caught)"""
-        self.raise_exc(RuntimeError)
+        self.raise_exc(SystemError)
         threads.remove(self)
 
 
