@@ -1,10 +1,12 @@
 import os
 import threading
+from multiprocessing import Process
 from threading import Thread
-from typing import Union
+from typing import Union, Callable
 
 from kivy import Logger
 from kivy.app import App
+from kivy.clock import Clock
 from kivy.properties import StringProperty, AliasProperty
 from kivy.uix.tabbedpanel import TabbedPanelItem
 
@@ -16,7 +18,9 @@ from starFunctions import remove_stars
 class ImageProcessingInfoItem(TabbedPanelItem):
     path = StringProperty()
     finished_path = StringProperty()
-    thread: Union[KillableThread, None] = None
+    thread: Union[Process, None] = None
+
+
 
     def __init__(self, **kwargs):
         TabbedPanelItem.__init__(self, **kwargs)
