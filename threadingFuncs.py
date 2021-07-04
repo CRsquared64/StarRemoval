@@ -53,7 +53,7 @@ class KillableThread(threading.Thread):
     def terminate(self):
         """raises SystemExit in the context of the given thread, which should
         cause the thread to exit silently (unless caught)"""
-        self.raise_exc(SystemError)
+        self.raise_exc(SystemExit)
         threads.remove(self)
 
 
