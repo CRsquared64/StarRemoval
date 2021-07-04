@@ -6,6 +6,8 @@ import threading
 import inspect
 import ctypes
 
+from kivy import Logger
+
 
 def _async_raise(tid, exctype):
     """raises the exception, performs cleanup if needed"""
@@ -51,7 +53,8 @@ class KillableThread(threading.Thread):
     def terminate(self):
         """raises SystemExit in the context of the given thread, which should
         cause the thread to exit silently (unless caught)"""
-        self.raise_exc(SystemExit)
+        self.raise_exc(RuntimeError)
+        threads.remove(self)
 
 
 threads: list[KillableThread] = list()
@@ -59,5 +62,11 @@ threads: list[KillableThread] = list()
 
 
 def kill_all():
+    length = len(threads)
     for thread in threads:
-        thread.terminate()
+        try:
+            thread.terminate()
+        except RuntimeError as e:
+            Logger.warning(f"Threading: Failed to close thread | error - {e}")
+
+    return length

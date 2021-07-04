@@ -16,63 +16,16 @@ from starFunctions import remove_stars
 
 
 
-
-print(2)
-
-print(__name__)
-
-funcs_from_other_process_that_were_run = Manager().list()
-id_to_class_array = {}
-
-
-def create_multi_process_safe_function(name, cls):
-    if id(cls) not in id_to_class_array:
-        id_to_class_array[id(cls)] = cls
-
-    def build_array(*args, _name=name, _cls_id=id(cls), **kwargs):
-        funcs_from_other_process_that_were_run.append(
-            {"name": _name, "cls_id": _cls_id, "args": args, "kwargs": kwargs})
-
-    return build_array
-
-
-class MultiProcessSafeFunction:
-    name: str
-    id: int
-
-    def __init__(self, name, cls):
-        self.name = name
-        self.id = id(cls)
-
-        if self.id not in id_to_class_array:
-            id_to_class_array[self.id] = cls
-
-    def __call__(self, *args, **kwargs):
-        print({"name": self.name, "cls_id": self.id, "args": args, "kwargs": kwargs})
-
-        funcs_from_other_process_that_were_run.append(
-            {"name": self.name, "cls_id": self.id, "args": args, "kwargs": kwargs})
-
-
-
 class ImageProcessingInfoItem(TabbedPanelItem):
     path = StringProperty()
     finished_path = StringProperty()
-    thread: Union[Process, None] = None
+    thread: Union[KillableThread, None] = None
 
 
 
     def __init__(self, **kwargs):
         TabbedPanelItem.__init__(self, **kwargs)
 
-        Clock.schedule_interval(lambda _elapsed_time: self.check_funcs_from_other_process_that_were_run(), 0)
-
-
-    def check_funcs_from_other_process_that_were_run(self):
-        for func_from_other_process_that_were_run in funcs_from_other_process_that_were_run:
-            print(func_from_other_process_that_were_run)
-            if func_from_other_process_that_were_run["cls_id"] == id(self):
-                print(10, func_from_other_process_that_were_run)
 
 
 
@@ -100,14 +53,10 @@ class ImageProcessingInfoItem(TabbedPanelItem):
             self.thread = None
 
         Logger.debug(f"ImageProcessingInfoItem: Starting new thread")
-        print(3)
-        self.thread = Process(target=remove_stars, args=(self.path, App.get_running_app().current_threshold,
-                                                                {"stars": MultiProcessSafeFunction(
-                                                                    "set_stars_amount", self),
-                                                                 "finished_path": MultiProcessSafeFunction(
-                                                                     "set_finished_path", self),
-                                                                 "time": MultiProcessSafeFunction(
-                                                                     "set_time_taken", self)}))
+        self.thread = KillableThread(target=remove_stars, args=(self.path, App.get_running_app().current_threshold,
+                                                                {"stars": self.set_stars_amount,
+                                                                 "finished_path": self.set_finished_path,
+                                                                 "time": self.set_time_taken}))
         self.thread.start()
 
     @mainloop
