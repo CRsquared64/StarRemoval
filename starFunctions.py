@@ -1,11 +1,9 @@
 import os
+import time
 
 import cv2
 import numpy as np
-import time
-import psutil
 from kivy import Logger
-from kivy.clock import Clock
 
 
 def remove_stars(path, threshold, callbacks):

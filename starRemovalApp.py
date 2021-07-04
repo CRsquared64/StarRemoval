@@ -1,32 +1,21 @@
-from tkinter import Tk, filedialog
-
-# Have to do this first because kivy breaks tkinter
-from kivy.properties import ListProperty
-from kivy.uix.label import Label
-from kivy.uix.tabbedpanel import TabbedPanel, TabbedPanelItem
-
-import threadingFuncs
-from threadingFuncs import KillableThread
-from scheduling_declarations import mainloop, next_frame
-
-
-
-
-import os
-from threading import Thread
+from tkinter import filedialog
 
 import kivy
 from kivy import Logger
 from kivy.app import App
+from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang.builder import Builder
+# Have to do this first because kivy breaks tkinter
+from kivy.properties import ListProperty
 from kivy.uix.screenmanager import ScreenManager
-from kivy.clock import Clock
+from kivy.uix.tabbedpanel import TabbedPanel
 
-import starFunctions
 import systemInfo
-from mainScreen import MainScreen
 from imageProcessingInfoItem import ImageProcessingInfoItem
+from mainScreen import MainScreen
+from scheduling_declarations import mainloop, next_frame
+from threadingFuncs import KillableThread
 
 kivy.require('2.0.0')
 
