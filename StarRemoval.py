@@ -8,12 +8,10 @@ if __name__ == '__main__':
     # noinspection PyUnresolvedReferences
     from kivy import *
 
-    from kivy.logger import Logger, formatter, formatter_message
-    from logging import _STYLES
+    from kivy.logger import Logger
+    from betterLogger import redo_logger_formatting
 
-    formatter._fmt = formatter_message(
-                '[%(threadName)-18s] [%(levelname)-18s] %(message)s', True)
-    formatter._style = _STYLES["%"][0](formatter._fmt)
+    redo_logger_formatting()
     Logger.info("AppBase: All things setup")
 
     import threadingFuncs
