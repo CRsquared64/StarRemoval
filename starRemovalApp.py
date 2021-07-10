@@ -66,16 +66,16 @@ class StarRemoval(App):
 
         paths = filedialog.askopenfilenames()
         if paths == "":
-            Logger.debug("No paths given, ignoring")
+            Logger.debug("App: No paths given, ignoring")
             return
 
-        Logger.debug(f"Added paths {paths}")
+        Logger.debug(f"App: Added paths {paths}")
         for path in paths:
             self.add_image_path(path)
 
 
     def set_threshold(self, thresh):
-        Logger.info(f"Current threshold set to {thresh}")
+        Logger.info(f"App: Current threshold set to {thresh}")
         self.current_threshold = thresh
 
     @mainloop
