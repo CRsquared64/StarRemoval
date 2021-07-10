@@ -8,6 +8,7 @@ from kivy import Logger
 
 def remove_stars(path, threshold, out_path, callbacks):
     Logger.info("Processor: Loading image and converting to grey")
+    Logger.debug(f"Threshold: current set to {threshold}")
 
     start = time.time()
     image = cv2.imread(path)

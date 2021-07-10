@@ -88,6 +88,11 @@ class StarRemoval(App):
     def set_memory_percent(self, memory):
         self.root.get_screen("MainScreen").ids["ram_usage_label"].text = f"RAM percent: {memory}"
 
+    def process(self):
+        for tab in self.root.get_screen("MainScreen").ids['image_processing_info_layout'].tab_list:
+            tab.update_thread()
+
+
 
 
 

@@ -1,4 +1,5 @@
 import os
+from threading import ThreadError
 from typing import Union
 
 from kivy import Logger
@@ -55,17 +56,21 @@ class ImageProcessingInfoItem(TabbedPanelItem):
 
         self.finished_path = get_finished_path_from_path(self.path)
 
-        self.update_thread()
 
     def update_thread(self):
+        self.finished_path = get_finished_path_from_path(self.path)
+        self.ids["threshold_label"].text = f"Threshold: {App.get_running_app().current_threshold}"
         if self.thread is not None:
             Logger.debug(f"ImageProcessingInfoItem: Terminating current thread")
-            self.thread.terminate()
+            try:
+                self.thread.terminate()
+            except ThreadError:
+                pass
             self.thread = None
 
         Logger.debug(f"ImageProcessingInfoItem: Starting new thread")
         self.thread = KillableThread(target=remove_stars, args=(self.path, App.get_running_app().current_threshold,
-                                                                get_finished_path_from_path(self.path),
+                                                                self.finished_path,
                                                                 {"stars": self.set_stars_amount,
                                                                  "finished": self.on_finished,
                                                                  "time": self.set_time_taken}))
@@ -86,3 +91,4 @@ class ImageProcessingInfoItem(TabbedPanelItem):
         Logger.debug(f"Finished")
 
         self.ids["after_image"].source = self.finished_path
+
