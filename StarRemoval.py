@@ -17,18 +17,20 @@ if __name__ == '__main__':
     import threadingFuncs
     from starRemovalApp import StarRemoval
 
+    e = None
+
     try:
         Logger.info("AppBase: Running app")
         Star = StarRemoval()
         Star.run()
 
-    except Exception as e:
-        raise e
+    except Exception as _e:
+        e = _e
 
     finally:
         Logger.info("AppBase: Killing all other threads")
         amount = threadingFuncs.kill_all()
         Logger.info(f"AppBase: Killed {amount} threads")
 
-        import sys
-        sys.exit()
+        if e is None:
+            raise e
