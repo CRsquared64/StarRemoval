@@ -57,6 +57,8 @@
                 text: ""
                 on_touch_up: if self.collide_point(args[1].x, args[1].y): root.label_clicked(self)
 
+                underline: True
+
             Label:
                 id: after_path_label
                 font_size: 15
@@ -64,12 +66,16 @@
                 text: ""
                 on_touch_up: if self.collide_point(args[1].x, args[1].y): root.label_clicked(self)
 
+                underline: True
+
             Label:
                 id: mask_path_label
                 font_size: 15
 
                 text: ""
                 on_touch_up: if self.collide_point(args[1].x, args[1].y): root.label_clicked(self)
+
+                underline: True
 
         BoxLayout:
             id: most_holder
