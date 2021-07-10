@@ -6,44 +6,70 @@
         on_height: most_holder.height = self.height - not_most_holder.height
 
 
-        BoxLayout:
+        GridLayout:
             id: not_most_holder
 
-            orientation: "vertical"
+            rows: 3
+            cols: 2
+
+            orientation: "tb-lr"
             size_hint_x: 1
 
             size_hint_y: None
             height: (15+3)*3
 
             Label:
-                id: path_label
+                size_hint_x: None
+                width: 100
+
                 font_size: 15
                 text_size: self.size
                 halign: "left"
-                valign: "bottom"
 
-                text: "  In Path: "
-                format: "In Path: {0}"
+                text: "In Path:"
+
+            Label:
+                size_hint_x: None
+                width: 100
+
+                font_size: 15
+                text_size: self.size
+                halign: "left"
+
+                text: "Out Path:"
+
+            Label:
+                size_hint_x: None
+                width: 100
+
+                font_size: 15
+                text_size: self.size
+                halign: "left"
+
+                text: "Mask Path: "
+
+            # ----------------------------------------------------------------------------------------------------------
+
+            Label:
+                id: path_label
+                font_size: 15
+
+                text: ""
+                on_touch_up: if self.collide_point(args[1].x, args[1].y): root.label_clicked(self)
 
             Label:
                 id: after_path_label
                 font_size: 15
-                text_size: self.size
-                halign: "left"
-                valign: "bottom"
 
-                text: " Out Path: "
-                format: "Out Path: {0}"
+                text: ""
+                on_touch_up: if self.collide_point(args[1].x, args[1].y): root.label_clicked(self)
 
             Label:
                 id: mask_path_label
                 font_size: 15
-                text_size: self.size
-                halign: "left"
-                valign: "bottom"
 
-                text: "Mask Path: "
-                format: "Mask Path: {0}"
+                text: ""
+                on_touch_up: if self.collide_point(args[1].x, args[1].y): root.label_clicked(self)
 
         BoxLayout:
             id: most_holder

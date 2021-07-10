@@ -1,4 +1,6 @@
 import os
+import platform
+import subprocess
 from threading import ThreadError
 from typing import Union
 
@@ -54,6 +56,19 @@ class ImageProcessingInfoItem(TabbedPanelItem):
         TabbedPanelItem.__init__(self, **kwargs)
 
 
+
+    def label_clicked(self, label):
+        if label.text != "":
+
+            if platform.system() == "Windows":
+                os.startfile(label.text)
+            elif platform.system() == "Darwin":
+                subprocess.Popen(["open", label.text])
+            else:
+                subprocess.Popen(["xdg-open", label.text])
+
+
+
     @next_frame
     def on_path(self, _instance, value):
         Logger.debug(f"ImageProcessingInfoItem: Path set to {self.path}")
@@ -61,7 +76,7 @@ class ImageProcessingInfoItem(TabbedPanelItem):
         self.text = str(os.path.splitext(os.path.basename(value))[0])
         self.ids["before_image"].source = value
         self.ids["after_image"].source = "fInChat"
-        self.ids["path_label"].text = self.ids["path_label"].format.format(value)
+        self.ids["path_label"].text = value
 
         self.finished_path = get_finished_path_from_path(self.path)
         self.mask_path = get_mask_path_from_path(self.path)
@@ -92,6 +107,7 @@ class ImageProcessingInfoItem(TabbedPanelItem):
     def set_stars_amount(self, amount):
         Logger.debug(f"Stars amount set to {amount}")
         self.ids["star_count_label"].text = f"Stars: {amount}"
+        self.ids["mask_path_label"].text = self.mask_path
 
     @mainloop
     def set_time_taken(self, amount):
@@ -104,6 +120,5 @@ class ImageProcessingInfoItem(TabbedPanelItem):
 
         self.ids["after_image"].source = self.finished_path
 
-        self.ids["after_path_label"].text = self.ids["after_path_label"].format.format(self.finished_path)
-        self.ids["mask_path_label"].text = self.ids["mask_path_label"].format.format(self.mask_path)
+        self.ids["after_path_label"].text = self.finished_path
 
