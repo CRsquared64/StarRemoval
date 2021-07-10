@@ -7,7 +7,7 @@ from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang.builder import Builder
 # Have to do this first because kivy breaks tkinter
-from kivy.properties import ListProperty
+from kivy.properties import ListProperty, NumericProperty
 from kivy.uix.screenmanager import ScreenManager
 from kivy.uix.tabbedpanel import TabbedPanel
 
@@ -28,7 +28,7 @@ class StarRemoval(App):
 
     finished_image_paths: list[str] = list()
 
-    current_threshold: int = 0
+    current_threshold: int = NumericProperty(defaultvalue=0, min=0, max=1)
     do_switch_image = False
 
     amount_running = 0
@@ -75,7 +75,7 @@ class StarRemoval(App):
 
 
     def set_threshold(self, thresh):
-        Logger.info(f"App: Current threshold set to {thresh}")
+        Logger.debug(f"App: Current threshold set to {thresh}")
         self.current_threshold = thresh
 
     @mainloop

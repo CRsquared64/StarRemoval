@@ -1,6 +1,4 @@
 import os
-from threading import ThreadError
-from typing import Union
 
 from kivy import Logger
 from kivy.app import App
@@ -45,19 +43,19 @@ def get_mask_path_from_path(path: str):
 class ImageProcessingInfoItem(TabbedPanelItem):
     path = StringProperty()
     finished_path = StringProperty()
-    thread: Union[KillableThread, None] = None
 
 
 
     def __init__(self, **kwargs):
         TabbedPanelItem.__init__(self, **kwargs)
+        App.get_running_app().bind(current_threshold=self.on_threshold)
 
 
-    def restart(self):
-        Logger.debug("Restarting")
 
-        self.ids["threshold_label"].text = f"Threshold: {App.get_running_app().current_threshold}"
-        self.update_thread()
+    def on_threshold(self, _instance, value):
+        thread = KillableThread(target=get_amount_of_stars, args=(self.path, value,
+                                                                  {"stars": self.set_stars_amount}))
+        thread.start()
 
 
     @next_frame
@@ -69,6 +67,7 @@ class ImageProcessingInfoItem(TabbedPanelItem):
         self.ids["after_image"].source = "fInChat"
         self.ids["path_label"].text = f"Path: {value}"
         self.ids["threshold_label"].text = f"Threshold: {App.get_running_app().current_threshold}"
+
         thread = KillableThread(target=get_amount_of_stars, args=(self.path, App.get_running_app().current_threshold,
                                                                   {"stars": self.set_stars_amount}))
         thread.start()
@@ -79,22 +78,15 @@ class ImageProcessingInfoItem(TabbedPanelItem):
     def update_thread(self):
         self.finished_path = get_finished_path_from_path(self.path)
         self.ids["threshold_label"].text = f"Threshold: {App.get_running_app().current_threshold}"
-        if self.thread is not None:
-            Logger.debug(f"ImageProcessingInfoItem: Terminating current thread")
-            try:
-                self.thread.terminate()
-            except ThreadError:
-                pass
-            self.thread = None
 
         Logger.debug(f"ImageProcessingInfoItem: Starting new thread")
-        self.thread = KillableThread(target=remove_stars, args=(self.path, App.get_running_app().current_threshold,
+        thread = KillableThread(target=remove_stars, args=(self.path, App.get_running_app().current_threshold,
                                                                 get_finished_path_from_path(self.path), True,
                                                                 {"stars": self.set_stars_amount,
                                                                  "finished": self.on_finished,
                                                                  "time": self.set_time_taken}),
                                      kwargs={"mask_path": get_mask_path_from_path(self.path)})
-        self.thread.start()
+        thread.start()
 
     @mainloop
     def set_stars_amount(self, amount):
