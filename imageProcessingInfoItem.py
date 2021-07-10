@@ -58,7 +58,7 @@ class ImageProcessingInfoItem(TabbedPanelItem):
 
     @next_frame
     def on_path(self, _instance, value):
-        Logger.debug(f"ImageProcessingInfoItem: Path set to {self.path}")
+        Logger.debug(f"IPII: Path set to {self.path}")
 
         self.text = str(os.path.splitext(os.path.basename(value))[0])
         self.ids["before_image"].source = value
@@ -72,11 +72,11 @@ class ImageProcessingInfoItem(TabbedPanelItem):
 
     def update_thread(self):
         if self.thread is not None:
-            Logger.debug(f"ImageProcessingInfoItem: Terminating current thread")
+            Logger.debug(f"IPII: Terminating current thread")
             self.thread.terminate()
             self.thread = None
 
-        Logger.debug(f"ImageProcessingInfoItem: Starting new thread")
+        Logger.debug(f"IPII: Starting new thread")
         self.thread = KillableThread(target=remove_stars, args=(self.path, App.get_running_app().current_threshold,
                                                                 get_finished_path_from_path(self.path), True,
                                                                 {"stars": self.set_stars_amount,
@@ -87,16 +87,16 @@ class ImageProcessingInfoItem(TabbedPanelItem):
 
     @mainloop
     def set_stars_amount(self, amount):
-        Logger.debug(f"Stars amount set to {amount}")
+        Logger.debug(f"IPII: Stars amount set to {amount}")
         self.ids["star_count_label"].text = f"Stars: {amount}"
 
     @mainloop
     def set_time_taken(self, amount):
-        Logger.debug(f"Time taken set to {amount}")
+        Logger.debug(f"IPII: Time taken set to {amount}")
         self.ids["time_label"].text = f"Time: {amount}"
 
     @mainloop
     def on_finished(self):
-        Logger.debug(f"Finished")
+        Logger.debug(f"IPII: Finished")
 
         self.ids["after_image"].source = self.finished_path

@@ -42,7 +42,7 @@ def remove_stars(path, threshold, out_path, save_mask, callbacks, mask_path=None
 
 
     if save_mask:
-        Logger.debug(f"Saving mask to {mask_path}")
+        Logger.debug(f"Processor: Saving mask to {mask_path}")
         try:
             os.makedirs(os.path.split(mask_path)[0])
 
