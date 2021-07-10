@@ -1,4 +1,5 @@
 import os
+from threading import ThreadError
 from typing import Union
 
 from kivy import Logger
@@ -17,19 +18,6 @@ def get_finished_path_from_path(path: str):
 
     path_to_file, file_name = os.path.split(path)
     path_to_file = os.path.join(path_to_file, "NoStarImages")
-
-    file_name, ext = os.path.splitext(file_name)
-    final_file_name = file_name + "-" + str(App.get_running_app().current_threshold) + ext
-
-    final_path = os.path.join(path_to_file, final_file_name)
-    return final_path
-
-
-def get_mask_path_from_path(path: str):
-    path = str(path)
-
-    path_to_file, file_name = os.path.split(path)
-    path_to_file = os.path.join(path_to_file, "NoStarMasks")
 
     file_name, ext = os.path.splitext(file_name)
     final_file_name = file_name + "-" + str(App.get_running_app().current_threshold) + ext
@@ -58,7 +46,7 @@ class ImageProcessingInfoItem(TabbedPanelItem):
 
     @next_frame
     def on_path(self, _instance, value):
-        Logger.debug(f"IPII: Path set to {self.path}")
+        Logger.debug(f"ImageProcessingInfoItem: Path set to {self.path}")
 
         self.text = str(os.path.splitext(os.path.basename(value))[0])
         self.ids["before_image"].source = value
@@ -73,32 +61,37 @@ class ImageProcessingInfoItem(TabbedPanelItem):
 
 
     def update_thread(self):
+        self.finished_path = get_finished_path_from_path(self.path)
+        self.ids["threshold_label"].text = f"Threshold: {App.get_running_app().current_threshold}"
         if self.thread is not None:
-            Logger.debug(f"IPII: Terminating current thread")
-            self.thread.terminate()
+            Logger.debug(f"ImageProcessingInfoItem: Terminating current thread")
+            try:
+                self.thread.terminate()
+            except ThreadError:
+                pass
             self.thread = None
 
-        Logger.debug(f"IPII: Starting new thread")
+        Logger.debug(f"ImageProcessingInfoItem: Starting new thread")
         self.thread = KillableThread(target=remove_stars, args=(self.path, App.get_running_app().current_threshold,
-                                                                get_finished_path_from_path(self.path), True,
+                                                                self.finished_path,
                                                                 {"stars": self.set_stars_amount,
                                                                  "finished": self.on_finished,
-                                                                 "time": self.set_time_taken}),
-                                     kwargs={"mask_path": get_mask_path_from_path(self.path)})
+                                                                 "time": self.set_time_taken}))
         self.thread.start()
 
     @mainloop
     def set_stars_amount(self, amount):
-        Logger.debug(f"IPII: Stars amount set to {amount}")
+        Logger.debug(f"Stars amount set to {amount}")
         self.ids["star_count_label"].text = f"Stars: {amount}"
 
     @mainloop
     def set_time_taken(self, amount):
-        Logger.debug(f"IPII: Time taken set to {amount}")
+        Logger.debug(f"Time taken set to {amount}")
         self.ids["time_label"].text = f"Time: {amount}"
 
     @mainloop
     def on_finished(self):
-        Logger.debug(f"IPII: Finished")
+        Logger.debug(f"Finished")
 
         self.ids["after_image"].source = self.finished_path
+
