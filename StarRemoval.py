@@ -32,5 +32,5 @@ if __name__ == '__main__':
         amount = threadingFuncs.kill_all()
         Logger.info(f"AppBase: Killed {amount} threads")
 
-        if e is None:
+        if e is not None:
             raise e

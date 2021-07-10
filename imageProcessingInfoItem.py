@@ -7,7 +7,7 @@ from kivy.properties import StringProperty
 from kivy.uix.tabbedpanel import TabbedPanelItem
 
 from scheduling_declarations import next_frame, mainloop
-from starFunctions import remove_stars
+from starFunctions import remove_stars, get_amount_of_stars
 from threadingFuncs import KillableThread
 
 
@@ -65,10 +65,12 @@ class ImageProcessingInfoItem(TabbedPanelItem):
         self.ids["after_image"].source = "fInChat"
         self.ids["path_label"].text = f"Path: {value}"
         self.ids["threshold_label"].text = f"Threshold: {App.get_running_app().current_threshold}"
+        thread = KillableThread(target=get_amount_of_stars, args=(self.path, App.get_running_app().current_threshold,
+                                                                  {"stars": self.set_stars_amount}))
+        thread.start()
 
         self.finished_path = get_finished_path_from_path(self.path)
 
-        self.update_thread()
 
     def update_thread(self):
         if self.thread is not None:

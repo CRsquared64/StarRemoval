@@ -6,6 +6,23 @@ import numpy as np
 from kivy import Logger
 
 
+def get_amount_of_stars(path, threshold, callbacks):
+    image = cv2.imread(path)
+    imageG = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+    Logger.info("Processor: Loading template")
+    template = cv2.imread('star.png', 0)
+    w, h = template.shape[::-1]
+
+    Logger.info("Processor: Matching template")
+    res = cv2.matchTemplate(imageG, template, cv2.TM_CCOEFF_NORMED)
+
+    Logger.info("Processor: Generating mask")
+    loc = np.where(res >= threshold)
+
+    callbacks["stars"](len([i for i in zip(*loc[::-1])]))
+
+
 def remove_stars(path, threshold, out_path, save_mask, callbacks, mask_path=None):
     Logger.info("Processor: Loading image and converting to grey")
 
