@@ -1,12 +1,19 @@
 <ImageProcessingInfoItem>:
     BoxLayout:
-        orientation: "horizontal"
+        orientation: "vertical"
         size_hint: 1, 1
 
-        BoxLayout: # Text
-            orientation: "vertical"
-            size_hint_x: 0.5
+        on_height: most_holder.height = self.height - not_most_holder.height
 
+
+        BoxLayout:
+            id: not_most_holder
+
+            orientation: "vertical"
+            size_hint_x: 1
+
+            size_hint_y: None
+            height: (15+3)*3
 
             Label:
                 id: path_label
@@ -14,60 +21,95 @@
                 text_size: self.size
                 halign: "left"
                 valign: "bottom"
-                text: "Path: "
+
+                text: "  In Path: "
+                format: "In Path: {0}"
+
             Label:
-                id: threshold_label
+                id: after_path_label
                 font_size: 15
                 text_size: self.size
                 halign: "left"
                 valign: "bottom"
-                text: "Threshold: "
+
+                text: " Out Path: "
+                format: "Out Path: {0}"
+
             Label:
-                id: star_count_label
+                id: mask_path_label
                 font_size: 15
                 text_size: self.size
                 halign: "left"
                 valign: "bottom"
-                text: "Stars: "
-            Label:
-                id: time_label
-                font_size: 15
-                text_size: self.size
-                halign: "left"
-                valign: "bottom"
-                text: "Time Taken: "
 
+                text: "Mask Path: "
+                format: "Mask Path: {0}"
 
+        BoxLayout:
+            id: most_holder
 
-        BoxLayout: # Images
             orientation: "horizontal"
-            size_hint_x: 0.5
+            size_hint_x: 1
 
-            padding: 20
-            spacing: 20
+            size_hint_y: None
 
-
-            BoxLayout:
+            BoxLayout: # Text
                 orientation: "vertical"
+                size_hint_x: 0.5
 
                 Label:
-                    text: "Before:"
-                    font_size: 20
-                    on_texture: self.height = self.texture.height
-                    size_hint_y: None
-
-                Image:
-                    id: before_image
-
-
-            BoxLayout:
-                orientation: "vertical"
-
+                    id: threshold_label
+                    font_size: 15
+                    text_size: self.size
+                    halign: "left"
+                    valign: "bottom"
+                    text: "Threshold: "
                 Label:
-                    text: "After:"
-                    font_size: 20
-                    on_texture: self.height = self.texture.height
-                    size_hint_y: None
+                    id: star_count_label
+                    font_size: 15
+                    text_size: self.size
+                    halign: "left"
+                    valign: "bottom"
+                    text: "Stars: "
+                Label:
+                    id: time_label
+                    font_size: 15
+                    text_size: self.size
+                    halign: "left"
+                    valign: "bottom"
+                    text: "Time Taken: "
 
-                Image:
-                    id: after_image
+
+
+            BoxLayout: # Images
+                orientation: "horizontal"
+                size_hint_x: 0.5
+
+                padding: 20
+                spacing: 20
+
+
+                BoxLayout:
+                    orientation: "vertical"
+
+                    Label:
+                        text: "Before:"
+                        font_size: 20
+                        on_texture: self.height = self.texture.height
+                        size_hint_y: None
+
+                    Image:
+                        id: before_image
+
+
+                BoxLayout:
+                    orientation: "vertical"
+
+                    Label:
+                        text: "After:"
+                        font_size: 20
+                        on_texture: self.height = self.texture.height
+                        size_hint_y: None
+
+                    Image:
+                        id: after_image
