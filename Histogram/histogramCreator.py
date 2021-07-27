@@ -1,7 +1,8 @@
 from matplotlib import pyplot as plt
 import skimage.io
 import skimage.color
-file = ()
+
+file = "lag.jpg"
 image = skimage.io.imread(file)
 
 transperancy = float(0.5)
@@ -14,4 +15,9 @@ plt.hist(image[:, :, 1].ravel(), bins = 128, color = 'Green', alpha = transperan
 plt.hist(image[:, :, 2].ravel(), bins = 128, color = 'Blue', alpha = transperancy)
 
 plt.legend(['Total', 'Red', 'Green', 'Blue'])
+try:
+    plt.savefig(f"{file}1.jpg")
+except:
+    print("Error saving file...")
+    print("Passing...")
 plt.show()
