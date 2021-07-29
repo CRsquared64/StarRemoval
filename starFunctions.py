@@ -1,13 +1,21 @@
 import os
 import time
-
 import cv2
 import numpy as np
 from kivy import Logger
+import tifffile as TIFF
+
 
 
 def get_amount_of_stars(path, threshold, callbacks):
-    image = cv2.imread(path)
+    if path.endswith(".tif", ".tiff"):
+        image = TIFF.imread(path, -1)
+        Logger.info("Processor: Loaded Tiff Format")
+        File_tiff = True
+    else:
+        image = cv2.imread(path)
+        Logger.info("Processor: Loaded Image")
+
     imageG = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     Logger.info("Processor: Loading template")
@@ -81,7 +89,9 @@ def remove_stars(path, threshold, out_path, save_mask, callbacks, mask_path=None
 
     except FileExistsError:
         pass
+
     cv2.imwrite(out_path, image)
+    TIFF.imsave("tiffversion.tiff",image)
 
     Logger.info(f"Processor: Finished in {time.time() - start}")
     callbacks["time"](time.time() - start)
